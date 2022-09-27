@@ -1,12 +1,15 @@
 package fr.uge.jee.annotations.onlineshop;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Set;
 
 @Configuration
+@ComponentScan
 public class Config {
+    /*
     @Bean
     Delivery standardDelivery() {
         return new ClassicShipping(999);
@@ -33,4 +36,5 @@ public class Config {
 
         return os;
     }
+     */
 }

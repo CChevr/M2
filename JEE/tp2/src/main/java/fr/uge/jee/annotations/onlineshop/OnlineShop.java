@@ -1,15 +1,22 @@
 package fr.uge.jee.annotations.onlineshop;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Component
 public class OnlineShop {
-    private String name;
+    private final String name;
+    @Autowired
     private Set<Delivery> deliveryOptions;
+    @Autowired
     private Set<Insurance> insurances;
 
-    public void setName(String name) {
+    OnlineShop(@Value("AhMaZone")String name) {
         this.name = Objects.requireNonNull(name);
     }
 

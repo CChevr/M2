@@ -5,17 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aef071c8-1388-4913-a54c-ee327be88dc1" name="Changes" comment="project creation">
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/Application.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ClassicShipping.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/Config.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/Delivery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/DroneShipping.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/Insurance.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/OnlineShop.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ReturnInsurance.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ThiefInsurance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ClassicShipping.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ClassicShipping.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/DroneShipping.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/DroneShipping.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/OnlineShop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/OnlineShop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ReturnInsurance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ReturnInsurance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ThiefInsurance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ThiefInsurance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/fr/uge/jee/AppTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,15 +39,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/Important/Ecole/UPEM/M2/JEE/tp2/src/main/java/fr/uge/jee/annotations/onlineshope",
-    "spring.configuration.checksum": "98d648825b692edb5772da0b209b82a3"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Cedric/Documents/Ecole/UPEM/M2/JEE/tp2&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;98d648825b692edb5772da0b209b82a3&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Important\Ecole\UPEM\M2\JEE\tp2\src\main\java\fr\uge\jee\annotations\onlineshope" />
@@ -85,6 +87,9 @@
       <updated>1664300047077</updated>
       <workItem from="1664300048301" duration="149000" />
       <workItem from="1664300504773" duration="1526000" />
+      <workItem from="1664303111751" duration="793000" />
+      <workItem from="1664304420833" duration="15000" />
+      <workItem from="1664304534737" duration="881000" />
     </task>
     <task id="LOCAL-00001" summary="project creation">
       <created>1664300110534</created>
