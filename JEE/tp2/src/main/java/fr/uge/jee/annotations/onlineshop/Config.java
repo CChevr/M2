@@ -3,11 +3,13 @@ package fr.uge.jee.annotations.onlineshop;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import java.util.Set;
 
 @Configuration
 @ComponentScan
+@PropertySource("classpath:onlineshop.properties")
 public class Config {
     /*
     @Bean

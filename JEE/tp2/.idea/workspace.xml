@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aef071c8-1388-4913-a54c-ee327be88dc1" name="Changes" comment="project creation">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/onlineshop.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ClassicShipping.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ClassicShipping.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/DroneShipping.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/DroneShipping.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/OnlineShop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/OnlineShop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ReturnInsurance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ReturnInsurance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ThiefInsurance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/onlineshop/ThiefInsurance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/fr/uge/jee/AppTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +42,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Cedric/Documents/Ecole/UPEM/M2/JEE/tp2&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
@@ -90,6 +87,8 @@
       <workItem from="1664303111751" duration="793000" />
       <workItem from="1664304420833" duration="15000" />
       <workItem from="1664304534737" duration="881000" />
+      <workItem from="1664308821083" duration="1471000" />
+      <workItem from="1664310633621" duration="1826000" />
     </task>
     <task id="LOCAL-00001" summary="project creation">
       <created>1664300110534</created>

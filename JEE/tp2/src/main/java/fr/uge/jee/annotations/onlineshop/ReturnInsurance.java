@@ -6,11 +6,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ReturnInsurance implements Insurance {
-    private final boolean members;
+    @Value("${onlineshop.returninsurance.membersonly}")
+    private boolean members;
 
+    /*
     ReturnInsurance(@Value("false")boolean members) {
         this.members = members;
     }
+    */
 
     public String getDescription() {
         if(members)
