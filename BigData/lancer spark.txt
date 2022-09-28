@@ -1,0 +1,4 @@
+lancer Spark
+
+se palcer dans le dossier de spark 
+saisir la commande bin/spark-shell

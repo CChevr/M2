@@ -1,0 +1,52 @@
+1. machines peu couteuses pour les entreprises
+
+2. Pour faciliter la parallélisation du travail
+	-> facilite le traitement de gros volumes de données
+
+3. Première version de la MapReduce librairie en 2003, article publié en 2004, création de Google en septembre 1998
+
+4. BigData processing, passage à l'échelle, tolérence aux pannes
+trying to perform but hides the messy de-
+tails of parallelization, fault-tolerance, data distribution
+and load balancing in a library
+
+5. data processing -> API simple
+			-> suffit d'écrire un map et un reduce
+			-> se charge de passer à l'échelle et de reprendre sur erreur
+
+tolerence aux pannes -> Master monitor tous les workers
+		-> vérifie avec les HeartBeats -> sortes de pings
+
+6.map (k1,v1) → list(k2,v2)
+reduce (k2,list(v2)) → list(v2)
+
+importance de recevoir des clefs/valeurs
+
+7.
+user
+	- map/reduce functions
+
+programmer:
+	- split
+	- parallelisation
+	- shuffle -> déplacement des données
+		-> rassemblement par clefs des valeurs
+		-> entre la sortie du map et l'entrée du reduce
+		-> garantie que toutes les valeurs avec la même clef seront traitées par le 
+			même reducer
+
+8. 
+adapté pour le traitement de très gros fichiers
+	-> coupe les fichiers en petits morceaux
+
+9. 
+- Single point of failure (MASTER)
+- accès disque pour enregistrer les fichiers temporaires
+- certains problèmes ne peuvent pas être exprimés sous la forme de Map/Reduce (pour rester productif/performant)
+- API un peu trop simple
+
+10.
+- Le fait que ce soit deterministe permet de s'assurer que le résultat sera le même que si l'exécution avait été produit par une exécution séquentielle
+plus du coté map -> basé sur un random ou bien basé sur l'heure
+
+11. 
