@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aef071c8-1388-4913-a54c-ee327be88dc1" name="Changes" comment="Ex1 Completed">
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/messenger/Application.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/jee/annotations/messenger/Messenger.java" afterDir="false" />
+    <list default="true" id="aef071c8-1388-4913-a54c-ee327be88dc1" name="Changes" comment="Ex2 Completed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +36,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Cedric/Documents/Ecole/UPEM/M2/JEE/tp2",
+    "last_opened_file_path": "D:/Important/Ecole/UPEM/M2/WebRest/Calculatrice",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
@@ -104,7 +102,9 @@
       <workItem from="1664304534737" duration="881000" />
       <workItem from="1664308821083" duration="1471000" />
       <workItem from="1664310633621" duration="3177000" />
-      <workItem from="1664314851849" duration="904000" />
+      <workItem from="1664314851849" duration="995000" />
+      <workItem from="1664315877779" duration="1000" />
+      <workItem from="1664455986173" duration="36000" />
     </task>
     <task id="LOCAL-00001" summary="project creation">
       <created>1664300110534</created>
@@ -120,7 +120,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664312516591</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Ex2 Completed">
+      <created>1664315790248</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1664315790248</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,6 +147,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="project creation" />
     <MESSAGE value="Ex1 Completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ex1 Completed" />
+    <MESSAGE value="Ex2 Completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ex2 Completed" />
   </component>
 </project>
