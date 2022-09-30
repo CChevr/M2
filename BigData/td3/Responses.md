@@ -61,4 +61,26 @@ while(size != begin.count) {
     begin = begin.union(end.join(begin).map(x=>(x._2._1, x._2._2))).distinct
 }
 
+val routes = begin
+```
+
+## 1.6
+Display, in sorted order on the subject value, only the subject,object pairs that have been added in the transitive closure (that is the pairs that were not originally in soPairs).
+
+```scala
+val diff = routes.subtract(soPairs).sortBy(x => x._1)
+```
+
+##  1.7
+Given the RDDs created so far, create an RDD, named rooted, which contains the set of nodes accessible from a root. The resulting RDD should look like a tuple with the root in the first position and a sorted list of all accessible nodes in the second position.
+
+```scala
+val rooted = roots.map(x => (x, 0)).join(routes.groupByKey()).map(x => (x._1, x._2._2.toList))
+```
+
+## 1.8
+Create an RDD, denoted cycles, that contains this graph’s set of cycles (that is its set of graph nodes).
+
+```scala
+
 ```
