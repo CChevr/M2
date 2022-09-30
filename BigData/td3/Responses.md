@@ -82,5 +82,9 @@ val rooted = roots.map(x => (x, 0)).join(routes.groupByKey()).map(x => (x._1, x.
 Create an RDD, denoted cycles, that contains this graph’s set of cycles (that is its set of graph nodes).
 
 ```scala
+val cycles = routes.filter(x => x._1 == x._2)
 
+val cyc = oPairs.filter(x => x._1 == x._2)
+val cycles = cic.join(sopairs).map(x._2._2, x._1).join(cyc).groupByKey().map(x=> x._2.map(y=>y._1)).distinct
+cycles.foreach(println)
 ```
