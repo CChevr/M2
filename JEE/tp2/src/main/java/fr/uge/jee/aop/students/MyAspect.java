@@ -26,7 +26,7 @@ public class MyAspect {
      */
 
     @Around(value="execution(* fr.uge.jee.aop.students.RegistrationService.create*(..))")
-    public Object aferAdd(ProceedingJoinPoint pjp) throws Throwable {
+    public Object aroundCreate(ProceedingJoinPoint pjp) throws Throwable {
         var methodName = pjp.getSignature().getName();
         var args = Arrays.toString(pjp.getArgs());
 
