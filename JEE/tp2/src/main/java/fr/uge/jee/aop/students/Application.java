@@ -6,11 +6,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Application {
 
+
     public static void main(String[] args) throws InterruptedException {
         //RegistrationService registrationService = new RegistrationService();
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-
         RegistrationService registrationService = context.getBean(RegistrationService.class);
+        MeasureDB measure = context.getBean(MeasureDB.class);
         registrationService.loadFromDB();
         long idHarry = registrationService.createStudent("Harry","Potter");
         long idHermione = registrationService.createStudent("Hermione","Granger");
@@ -29,8 +30,7 @@ public class Application {
         registrationService.register(idMalfoy,idDetention);
 
         registrationService.printReport();
-
-
+        System.out.println(measure.description());
     }
 
 
