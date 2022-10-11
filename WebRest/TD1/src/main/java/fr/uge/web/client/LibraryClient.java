@@ -1,7 +1,7 @@
 package fr.uge.web.client;
 
+import fr.uge.web.common.IBook;
 import fr.uge.web.common.ILibrary;
-import fr.uge.web.server.Book;
 
 import java.rmi.Naming;
 import java.util.List;
@@ -14,7 +14,7 @@ public class LibraryClient {
             l.addBook(13256, "Science", "Ahmed");
             l.addBook(1354, "Chemistry", "David");
 
-            List<Book> ll = l.searchBookByAuthor("Benoit");
+            List<IBook> ll = l.searchBookByAuthor("Benoit");
             System.out.println("Benoit wrote" + ll.get(0).getTitle());
 
             ll.get(0).setAuthor("Baptiste");

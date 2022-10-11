@@ -1,5 +1,6 @@
 package fr.uge.web.server;
 
+import fr.uge.web.common.IBook;
 import fr.uge.web.common.ILibrary;
 
 import java.rmi.RemoteException;
@@ -7,7 +8,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 public class Library extends UnicastRemoteObject implements ILibrary {
-    private final Map<Long, Book> books;
+    private final Map<Long, IBook> books;
 
     protected Library() throws RemoteException {
         super();
@@ -46,9 +47,9 @@ public class Library extends UnicastRemoteObject implements ILibrary {
      * @throws RemoteException
      */
     @Override
-    public List<Book> searchBookByTitle(String title) throws RemoteException {
+    public List<IBook> searchBookByTitle(String title) throws RemoteException {
         Objects.requireNonNull(title);
-        var result = new ArrayList<Book>();
+        var result = new ArrayList<IBook>();
 
         for(var book: books.values()) {
             if(book.getTitle().equals(title)) {
@@ -66,12 +67,12 @@ public class Library extends UnicastRemoteObject implements ILibrary {
      * @throws RemoteException
      */
     @Override
-    public List<Book> searchBookByAuthor(String author) throws RemoteException {
+    public List<IBook> searchBookByAuthor(String author) throws RemoteException {
         Objects.requireNonNull(author);
-        var result = new ArrayList<Book>();
+        var result = new ArrayList<IBook>();
 
         for(var book: books.values()) {
-            if(book.getTitle().equals(author)) {
+            if(book.getAuthor().equals(author)) {
                 result.add(book);
             }
         }
