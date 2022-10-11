@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<hmtl>
+<html>
     <form action="/App/rectangle" method="post">
         <h2>Rectangle area calculator</h2>
         <div><label for="h">Height:</label>
-            <input id="h" type="text" name="height"></div>
+            <input id="h" type="text" name="height" value="%s"></div>
 
         <div><label for="w">Width:</label>
-            <input type="text" id="w" name="width"></div>
+            <input type="text" id="w" name="width" value="%s"></div>
 
         <div><button type="submit">Compute</button></div>
     </form>
-</hmtl>
+    <p>%s</p>
+</html>
