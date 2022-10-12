@@ -48,6 +48,7 @@ public class HelloSessionBetter extends HttpServlet {
     private void manageOldClient(PrintWriter writer, HttpServletResponse response, String token) {
         if (!tokenManager.exists(token)) {
             manageNewClient(writer, response);
+            return;
         }
 
         var time = tokenManager.visitClient(token);
