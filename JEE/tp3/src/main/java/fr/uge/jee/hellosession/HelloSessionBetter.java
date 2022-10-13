@@ -1,65 +1,31 @@
 package fr.uge.jee.hellosession;
 
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
 
-@WebServlet("/hellosession")
+@WebServlet("/hellosessionbetter")
 public class HelloSessionBetter extends HttpServlet {
-    private final TokenManager tokenManager = new TokenManager();
-    private final String NAME = "hellosession";
+    private String COUNTER_ID = "counter";
 
-    private Optional<Cookie> getCookie(HttpServletRequest request) {
-        var cookies = request.getCookies();
+    private void buildScreen(PrintWriter writer, Long counter) {
+        writer.format("<p>Bonjour pour la %d-ème fois", counter);
+    }
 
-        if(cookies == null) {
-            return Optional.empty();
+    private void computeConnexion(PrintWriter writer, HttpServletRequest request) {
+        var session = request.getSession(true);
+
+        if (session.isNew()) {
+            session.setAttribute(COUNTER_ID, 1L);
         }
 
-        return Arrays.stream(request.getCookies())
-                .filter(x -> x.getName().equals(NAME))
-                .findAny();
-    }
-
-    private void computeScreen(PrintWriter writer, long time) {
-        writer.format("<p>Bonjour pour la %d-ème fois", time);
-    }
-
-    private Cookie generateCookie(String token) {
-        Objects.requireNonNull(token);
-
-        return new Cookie(NAME, token);
-    }
-
-    private void manageNewClient(PrintWriter writer, HttpServletResponse response) {
-        var token = tokenManager.addClient();
-        response.addCookie(generateCookie(token));
-        computeScreen(writer, 1L);
-    }
-
-    private void manageOldClient(PrintWriter writer, HttpServletResponse response, String token) {
-        if (!tokenManager.exists(token)) {
-            manageNewClient(writer, response);
-            return;
-        }
-
-        var time = tokenManager.visitClient(token);
-        computeScreen(writer, time);
-    }
-
-    private void computeConnection(PrintWriter writer, HttpServletRequest request, HttpServletResponse response) {
-        var cookie = getCookie(request);
-
-        cookie.ifPresentOrElse(c -> manageOldClient(writer, response, c.getValue()),
-                () -> manageNewClient(writer, response));
+        var counter = (Long) session.getAttribute(COUNTER_ID);
+        buildScreen(writer, counter);
+        session.setAttribute(COUNTER_ID, (counter + 1L));
     }
 
     @Override
@@ -68,7 +34,7 @@ public class HelloSessionBetter extends HttpServlet {
         response.setCharacterEncoding("utf-8");
         PrintWriter writer = response.getWriter();
 
-        computeConnection(writer, request, response);
+        computeConnexion(writer, request);
 
         writer.flush();
     }
