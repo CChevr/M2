@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <title>Rectangle Spring-MVC</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <form th:action="@{/rectangle}" th:object="${rectangle}" method="post">
+        <h2>Rectangle area calculator</h2>
+        <div>
+            <label for="h">Height:</label>
+            <input id="h" type="text" name="height" th:field="${rectangle.height}" />
+            <p th:if="${#fields.hasErrors('height')}" th:errors="${rectangle.height}">Height Error</p>
+        </div>
+
+        <div>
+            <label for="w">Width:</label>
+            <input type="text" id="w" name="width" th:field="${rectangle.width}" />
+            <p th:if="${#fields.hasErrors('width')}" th:errors="${rectangle.width}">Width Error</p>
+        </div>
+
+        <div><button type="submit">Compute</button></div>
+    </form>
+</body>
+</html>
