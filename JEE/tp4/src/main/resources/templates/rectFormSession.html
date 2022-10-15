@@ -20,7 +20,7 @@
   </div>
 
   <div><button type="submit">Compute</button></div>
-  <div>
+  <div th:unless="${#lists.isEmpty(areas)}">
     <p>Previous areas :</p>
     <ul>
       <li th:each="item : ${areas}" th:text="${item}"></li>
