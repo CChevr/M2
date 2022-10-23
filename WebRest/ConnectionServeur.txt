@@ -1,0 +1,4 @@
+http://localhost:5653/ServiceWebDemo/services/Hello
+
+endpoints:
+http://localhost:8080/WebServiceDemoClient/sampleHelloProxy/TestClient.jsp?endpoint=http://localhost:13159/WebServiceDemo/services/Hello
