@@ -30,8 +30,10 @@ object td6 extends App {
     // 2.2.5
     val edges = sub.map(x => (x._1, x._2))
     println("edges : " + edges.count())                 // edges : 25484
-    val dupEdges = edges.map(x => (x, 1)).reduceByKey(_ + _).filter(x => x._2 > 1).map(x => x._1)
+    val dupEdges = edges.map(x => (x, 1)).reduceByKey(_ + _).filter(x => x._2 > 1).map(x => x._1)   // duplicated : 3434
     println("duplicated edges : " + dupEdges.count())   // duplicated edges : 687
     val distEdges = edges.subtract(dupEdges)
-    println("distinct edges: " + distEdges.count())
+    println("distinct edges: " + distEdges.count())     // distinct edges: 22050
+
+    // 2.2.7
 }
