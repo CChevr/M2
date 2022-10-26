@@ -17,7 +17,6 @@ import java.util.Objects;
 @Controller
 @SessionAttributes("user")
 public class PokeController {
-    // bean -> partager avec tous
     private Pokedex pokedex;
 
     @ModelAttribute("user")
@@ -26,13 +25,14 @@ public class PokeController {
     }
 
     @Autowired
-    public void setPokeManager(Pokedex pokedex) {
+    public void setPokedex(Pokedex pokedex) {
         this.pokedex = Objects.requireNonNull(pokedex);
     }
 
     @GetMapping("/pokematch")
     public String greeting(Model model, @ModelAttribute("hi") User user) {
         model.addAttribute("user", user);
+        pokedex.getPokemons().forEach(System.out::println);
         return "pokematch";
     }
 

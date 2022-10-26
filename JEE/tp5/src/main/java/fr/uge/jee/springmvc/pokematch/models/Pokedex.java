@@ -11,19 +11,15 @@ import java.util.Objects;
 
 public class Pokedex {
     private String pokeapi;
-    private List<Pokemon> pokemons = new ArrayList<>();
+    private final List<Pokemon> pokemons = new ArrayList<>();
     //private final Map<Long, Pokemon> pokemons = new HashMap<>();
 
     private Pokedex(String api) {
         this.pokeapi = Objects.requireNonNull(api);
     }
 
-    public static Pokedex build(String api) {
-        var pokedex = new Pokedex(api);
-        System.out.println(pokedex.pokeapi);
-
-        //WebClient webClient = WebClient.create();
-        /*
+    public void fillPokemons() {
+        WebClient webClient = WebClient.create();
         var monoClient = webClient.get()
                 .uri(pokeapi)
                 .retrieve()
@@ -31,20 +27,20 @@ public class Pokedex {
 
 
         var pokeresponse = monoClient.blockOptional();
-        pokeresponse.ifPresent(x -> pokeManager.setPokemons(x.getPokemons()));
-         */
+        pokeresponse.ifPresent(x -> addPokemons(x.getPokemons()));
+    }
+
+    public static Pokedex build(String api) {
+        var pokedex = new Pokedex(api);
+        pokedex.fillPokemons();
         return pokedex;
     }
 
-    public void setPokemons(List<Pokemon> pokemons) {
-        this.pokemons = pokemons;
+    public void addPokemons(List<Pokemon> pokemons) {
+        this.pokemons.addAll(pokemons);
     }
 
     public List<Pokemon> getPokemons() {
         return pokemons;
-    }
-
-    public String getPokeapi() {
-        return pokeapi;
     }
 }
