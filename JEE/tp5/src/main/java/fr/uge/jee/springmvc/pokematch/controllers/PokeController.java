@@ -1,8 +1,8 @@
 package fr.uge.jee.springmvc.pokematch.controllers;
 
-import fr.uge.jee.springmvc.pokematch.models.Pokemon;
-import fr.uge.jee.springmvc.pokematch.models.PokemonManager;
+import fr.uge.jee.springmvc.pokematch.models.PokeManager;
 import fr.uge.jee.springmvc.pokematch.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,15 +17,16 @@ import java.util.Objects;
 @Controller
 @SessionAttributes("user")
 public class PokeController {
-    private PokemonManager pokeManager;
-
-    public void setPokeManager(PokemonManager pokemanager) {
-        this.pokeManager = Objects.requireNonNull(pokemanager);
-    }
+    private PokeManager pokeManager;
 
     @ModelAttribute("user")
     public User user(){
         return new User();
+    }
+
+    @Autowired
+    public void setPokeManager(PokeManager pokemanager) {
+        this.pokeManager = Objects.requireNonNull(pokemanager);
     }
 
     @GetMapping("/pokematch")
