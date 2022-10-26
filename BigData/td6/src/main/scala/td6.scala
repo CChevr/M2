@@ -26,4 +26,12 @@ object td6 extends App {
     resp2.foreach(println)                              // (FT,4463)\n    (SA, 21021)
     val saSub = sub.filter(x => (x._4 == "SA")).map(x => (x._1, x._2, x._3))
     println("saSub: " + saSub.count)                    // saSub: 21021
+
+    // 2.2.5
+    val edges = sub.map(x => (x._1, x._2))
+    println("edges : " + edges.count())                 // edges : 25484
+    val dupEdges = edges.map(x => (x, 1)).reduceByKey(_ + _).filter(x => x._2 > 1).map(x => x._1)
+    println("duplicated edges : " + dupEdges.count())   // duplicated edges : 687
+    val distEdges = edges.subtract(dupEdges)
+    println("distinct edges: " + distEdges.count())
 }
