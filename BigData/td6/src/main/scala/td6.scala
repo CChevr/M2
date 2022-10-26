@@ -5,6 +5,8 @@ import org.apache.spark.{SparkConf, SparkContext}
 object td6 extends App {
   val conf = new SparkConf().setAppName("simpleSparkApp").setMaster("local")
   val sc = new SparkContext(conf)
-  val drugs = sc.textFile("med.txt").map(x => (x(1), x(2), x(7)))
-  drugs.foreach(println)
+
+  // 2.2.1
+  val drugs = sc.textFile("med.txt").map(x => x.split("\t")).map(x => (x(0), x(1), x(6)))
+  println("DRUGS : " + drugs.count())
 }
