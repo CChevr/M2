@@ -13,4 +13,6 @@ object td6 extends App {
   // 2.2.2
   val rep = drugs.map(x => (x._3, 1)).reduceByKey(_ + _)
   rep.foreach(println)
+  val comDrugs = drugs.filter(x => x._3 == "Commercialis�e").map(x => (x._1, x._2))
+
 }
