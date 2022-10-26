@@ -19,7 +19,7 @@ public class PokeManager {
         var pokeManager = new PokeManager();
         WebClient webClient = WebClient.create();
         var monoClient = webClient.get()
-                .uri(pokeapi + "pokemon/")
+                .uri(pokeapi)
                 .retrieve()
                 .bodyToMono(PokeResponse.class);
 
