@@ -1,6 +1,6 @@
 package fr.uge.jee.springmvc.pokematch.controllers;
 
-import fr.uge.jee.springmvc.pokematch.models.PokeManager;
+import fr.uge.jee.springmvc.pokematch.models.Pokedex;
 import fr.uge.jee.springmvc.pokematch.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,8 @@ import java.util.Objects;
 @Controller
 @SessionAttributes("user")
 public class PokeController {
-    private PokeManager pokeManager;
+    // bean -> partager avec tous
+    private Pokedex pokedex;
 
     @ModelAttribute("user")
     public User user(){
@@ -25,14 +26,13 @@ public class PokeController {
     }
 
     @Autowired
-    public void setPokeManager(PokeManager pokemanager) {
-        this.pokeManager = Objects.requireNonNull(pokemanager);
+    public void setPokeManager(Pokedex pokedex) {
+        this.pokedex = Objects.requireNonNull(pokedex);
     }
 
     @GetMapping("/pokematch")
     public String greeting(Model model, @ModelAttribute("hi") User user) {
         model.addAttribute("user", user);
-        pokeManager.getPokemons().forEach(System.out::println);
         return "pokematch";
     }
 
@@ -42,6 +42,7 @@ public class PokeController {
         if (bindingResult.hasErrors()) {
             return "pokematch";
         }
+
 
         System.out.println(user.getFirstName() + user.getLastName());
         return "pokematch";
