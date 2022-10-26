@@ -32,6 +32,7 @@ public class PokeController {
     @GetMapping("/pokematch")
     public String greeting(Model model, @ModelAttribute("hi") User user) {
         model.addAttribute("user", user);
+        pokeManager.getPokemons().forEach(System.out::println);
         return "pokematch";
     }
 
