@@ -8,36 +8,51 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Pokedex {
-    private String pokeapi;
+    private final String pokeapi;
+    private final int maxSize;
     private final List<Pokemon> pokemons = new ArrayList<>();
     //private final Map<Long, Pokemon> pokemons = new HashMap<>();
 
-    private Pokedex(String api) {
+    private Pokedex(String api, int maxSize) {
         this.pokeapi = Objects.requireNonNull(api);
+        this.maxSize = maxSize;
     }
 
-    public void fillPokemons() {
+    private Optional<PokeResponse> askApi(String uri) {
         WebClient webClient = WebClient.create();
+
         var monoClient = webClient.get()
-                .uri(pokeapi)
+                .uri(uri)
                 .retrieve()
                 .bodyToMono(PokeResponse.class);
 
-
-        var pokeresponse = monoClient.blockOptional();
-        pokeresponse.ifPresent(x -> addPokemons(x.getPokemons()));
+        return monoClient.blockOptional();
     }
 
-    public static Pokedex build(String api) {
-        var pokedex = new Pokedex(api);
+    public void fillPokemons() {
+        var uri = pokeapi;
+
+        while(pokemons.size() < maxSize) {
+            var answer = askApi(uri);
+            if (answer.isEmpty()) break;
+            var pokeresponse = answer.get();
+            uri = pokeresponse.getNext();
+            addPokemons(pokeresponse.getPokemons());
+        }
+    }
+
+    public static Pokedex build(String api, int maxSize) {
+        var pokedex = new Pokedex(api, maxSize);
         pokedex.fillPokemons();
         return pokedex;
     }
 
     public void addPokemons(List<Pokemon> pokemons) {
-        this.pokemons.addAll(pokemons);
+        this.pokemons.addAll(pokemons.stream().limit(Math.min(maxSize, pokemons.size())).collect(Collectors.toList()));
     }
 
     public List<Pokemon> getPokemons() {

@@ -14,10 +14,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class Config {
     @Value("${pokematch.pokeapi}")
     private String api;
+    @Value("${pokematch.pokesize}")
+    private int maxSize;
 
     @Bean
-    Pokedex pokedex(ApplicationContext context) {
-        return Pokedex.build(api);
+    Pokedex pokedex() {
+        return Pokedex.build(api, maxSize);
     }
 
     @Bean
