@@ -12,7 +12,7 @@ public class PokeAPI implements IPokeAPI {
 
     @Override
     public boolean hasNext() {
-        return !next.equals("");
+        return next != null;
     }
 
     // TODO effectue les appelles les uns après les autres plutot que de les paralelliser

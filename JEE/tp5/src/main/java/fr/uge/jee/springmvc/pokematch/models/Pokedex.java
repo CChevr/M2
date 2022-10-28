@@ -11,7 +11,6 @@ import java.util.*;
 public class Pokedex {
     private final IPokeAPI pokeAPI;
     private final int maxSize;
-    //private final List<Pokemon> pokemons = new ArrayList<>();
     private final Map<Integer, Pokemon> pokemons = new HashMap<>();
 
     private Pokedex(IPokeAPI pokeAPI, int maxSize) {

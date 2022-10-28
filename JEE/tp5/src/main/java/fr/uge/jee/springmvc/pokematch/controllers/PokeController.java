@@ -33,6 +33,7 @@ public class PokeController {
     public String greeting(Model model, @ModelAttribute("hi") User user) {
         model.addAttribute("user", user);
         pokedex.getPokemons().forEach(System.out::println);
+        System.out.println(pokedex.getPokemons().size());
         return "pokematch";
     }
 

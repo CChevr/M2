@@ -11,12 +11,5 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-        /*
-        SpringApplication.run(App.class, args);
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config.class);
-        var pokedex = applicationContext.getBean("pokemanager", PokeManager.class);
-         */
     }
-
-    // Ne pas utiliser de CommandLineRunner
 }
