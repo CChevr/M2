@@ -1,5 +1,7 @@
 package fr.uge.jee.springmvc.pokematch;
 
+import fr.uge.jee.springmvc.pokematch.api.IPokeAPI;
+import fr.uge.jee.springmvc.pokematch.api.PokeAPI;
 import fr.uge.jee.springmvc.pokematch.models.Pokedex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -12,14 +14,17 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 @PropertySource("classpath:pokematch.properties")
 public class Config {
-    @Value("${pokematch.pokeapi}")
-    private String api;
     @Value("${pokematch.pokesize}")
     private int maxSize;
 
     @Bean
-    Pokedex pokedex() {
-        return Pokedex.build(api, maxSize);
+    IPokeAPI pokeAPI() {
+        return new PokeAPI();
+    }
+
+    @Bean
+    Pokedex pokedex(IPokeAPI pokeAPI) {
+        return Pokedex.build(pokeAPI, maxSize);
     }
 
     @Bean

@@ -1,38 +1,22 @@
 package fr.uge.jee.springmvc.pokematch.models;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
+import fr.uge.jee.springmvc.pokematch.api.IPokeAPI;
+import fr.uge.jee.springmvc.pokematch.api.PokeResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Pokedex {
-    private final String pokeapi;
+    private final IPokeAPI pokeAPI;
     private final int maxSize;
     //private final List<Pokemon> pokemons = new ArrayList<>();
     private final Map<Integer, Pokemon> pokemons = new HashMap<>();
 
-    private Pokedex(String api, int maxSize) {
-        this.pokeapi = Objects.requireNonNull(api);
+    private Pokedex(IPokeAPI pokeAPI, int maxSize) {
+        this.pokeAPI = Objects.requireNonNull(pokeAPI);
         this.maxSize = maxSize;
-    }
-
-    /**
-     * Ask to the api
-     * @param uri uri to question
-     * @return api response
-     */
-    private Optional<PokeResponse> askApi(String uri) {
-        WebClient webClient = WebClient.create();
-
-        var monoClient = webClient.get()
-                .uri(uri)
-                .retrieve()
-                .bodyToMono(PokeResponse.class);
-
-        return monoClient.blockOptional();
     }
 
     /**
@@ -51,25 +35,22 @@ public class Pokedex {
      * Fill pokemon from the api
      */
     public void fillPokemons() {
-        var uri = pokeapi;
-
-        while(pokemons.size() < maxSize) {
-            var answer = askApi(uri);
+        while(pokeAPI.hasNext() && pokemons.size() < maxSize) {
+            var answer = pokeAPI.getNext();
             if (answer.isEmpty()) break;
             var pokeresponse = answer.get();
-            uri = pokeresponse.getNext();
             addPokemons(pokeresponse.getPokemons());
         }
     }
 
     /**
      * Build the pokedex
-     * @param api pokemon api
+     * @param pokeAPI pokemon api manager
      * @param maxSize pokdex maximum size
      * @return Pokedex with all pokemons
      */
-    public static Pokedex build(String api, int maxSize) {
-        var pokedex = new Pokedex(api, maxSize);
+    public static Pokedex build(IPokeAPI pokeAPI, int maxSize) {
+        var pokedex = new Pokedex(pokeAPI, maxSize);
         pokedex.fillPokemons();
         return pokedex;
     }
