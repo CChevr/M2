@@ -16,6 +16,12 @@
         <span  th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Invalid Last Name</span></div>
 
     <div><button type="submit">Compute</button></div>
+
+    <!-- Affichage du pokemon fetiche -->
+    <div th:if="${pokemon} != null">
+        <h2>Pokémon fétiche :</h2>
+        <img th:src="${pokemon}" alt="image de pokemon"/>
+    </div>
 </form>
 </body>
 </html>

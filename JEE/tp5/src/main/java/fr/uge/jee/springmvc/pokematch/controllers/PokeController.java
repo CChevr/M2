@@ -47,10 +47,12 @@ public class PokeController {
         System.out.println(pokemon.getName());
         var image = pokedex.getPokemonImage(pokemon);
 
-        if (image.isPresent())
+        if (image.isPresent()) {
             System.out.println("img : " + image);
-        else
+            model.addAttribute("pokemon", image.get());
+        } else {
             System.out.println("No image found");
+        }
 
         return "pokematch";
     }
