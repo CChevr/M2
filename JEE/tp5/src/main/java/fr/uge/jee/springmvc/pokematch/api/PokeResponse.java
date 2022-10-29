@@ -1,7 +1,7 @@
 package fr.uge.jee.springmvc.pokematch.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.uge.jee.springmvc.pokematch.models.Pokemon;
+import fr.uge.jee.springmvc.pokematch.pokemon.Pokemon;
 
 import java.util.List;
 

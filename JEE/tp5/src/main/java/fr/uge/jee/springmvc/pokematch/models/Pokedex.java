@@ -1,10 +1,8 @@
 package fr.uge.jee.springmvc.pokematch.models;
 
 import fr.uge.jee.springmvc.pokematch.api.IPokeAPI;
-import fr.uge.jee.springmvc.pokematch.api.PokeResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import fr.uge.jee.springmvc.pokematch.pokemon.Pokemon;
+import fr.uge.jee.springmvc.pokematch.pokemon.Sprites;
 
 import java.util.*;
 
@@ -12,6 +10,8 @@ public class Pokedex {
     private final IPokeAPI pokeAPI;
     private final int maxSize;
     private final Map<Integer, Pokemon> pokemons = new HashMap<>();
+
+    private Sprites sprites;
 
     private Pokedex(IPokeAPI pokeAPI, int maxSize) {
         this.pokeAPI = Objects.requireNonNull(pokeAPI);
@@ -85,5 +85,14 @@ public class Pokedex {
      */
     public List<Pokemon> getPokemons() {
         return new ArrayList<>(pokemons.values());
+    }
+
+    /**
+     * get an image of the given pokemon
+     * @param pokemon looking for an image
+     * @return the url of the image if it has been possible
+     */
+    public Optional<String> getPokemonImage(Pokemon pokemon) {
+        return pokemon.getImage(pokeAPI);
     }
 }

@@ -18,8 +18,16 @@ public class Config {
     private int maxSize;
 
     @Bean
-    IPokeAPI pokeAPI() {
-        return new PokeAPI();
+    WebClient getWebClient(WebClient.Builder defaultBuilder) {
+        return defaultBuilder.exchangeStrategies(ExchangeStrategies.builder()
+                .codecs(configurer -> configurer
+                        .defaultCodecs()
+                        .maxInMemorySize(16 * 1024 * 1024)).build()).build();
+    }
+
+    @Bean
+    IPokeAPI pokeAPI(WebClient getWebClient) {
+        return new PokeAPI(getWebClient);
     }
 
     @Bean
@@ -27,11 +35,4 @@ public class Config {
         return Pokedex.build(pokeAPI, maxSize);
     }
 
-    @Bean
-    WebClient getWebClient(WebClient.Builder defaultBuilder) {
-        return defaultBuilder.exchangeStrategies(ExchangeStrategies.builder()
-                .codecs(configurer -> configurer
-                        .defaultCodecs()
-                        .maxInMemorySize(16 * 1024 * 1024)).build()).build();
-    }
 }

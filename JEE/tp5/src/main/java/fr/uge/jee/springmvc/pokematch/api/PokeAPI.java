@@ -1,5 +1,6 @@
 package fr.uge.jee.springmvc.pokematch.api;
 
+import fr.uge.jee.springmvc.pokematch.models.PokeDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -9,6 +10,11 @@ import java.util.Optional;
 public class PokeAPI implements IPokeAPI {
     @Value("${pokematch.pokeapi}")
     private String next;
+    private WebClient webClient;
+
+    public PokeAPI(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     @Override
     public boolean hasNext() {
@@ -22,8 +28,6 @@ public class PokeAPI implements IPokeAPI {
      * @return api response
      */
     private Optional<IPokeResponse> askApi(String uri) {
-        WebClient webClient = WebClient.create();
-
         var monoClient = webClient.get()
                 .uri(uri)
                 .retrieve()
@@ -42,6 +46,16 @@ public class PokeAPI implements IPokeAPI {
             next = pokeresponse.getNext();
         }
         return answer;
+    }
+
+    @Override
+    public Optional<PokeDetails> getDetails(String uri) {
+        var monoClient = webClient.get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(PokeDetails.class);
+
+        return Optional.ofNullable(monoClient.block());
     }
 
     // TODO getAll -> faire attention à paralléliser les requêtes
