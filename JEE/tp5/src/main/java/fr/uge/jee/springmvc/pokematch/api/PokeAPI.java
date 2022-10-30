@@ -7,6 +7,8 @@ import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PokeAPI implements IPokeAPI {
@@ -30,6 +32,7 @@ public class PokeAPI implements IPokeAPI {
 
         Flux.merge(monos).toStream()
                 .map(PokeDetails::buildPokemon)
+                .flatMap(Optional::stream)
                 .forEach(pokemons::add);
 
         return pokemons;

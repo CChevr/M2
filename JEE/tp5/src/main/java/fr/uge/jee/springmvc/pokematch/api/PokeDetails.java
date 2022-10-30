@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.uge.jee.springmvc.pokematch.models.Pokemon;
 
 import java.util.Map;
+import java.util.Optional;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PokeDetails {
@@ -26,8 +27,10 @@ public class PokeDetails {
         this.sprites = sprites;
     }
 
-    public Pokemon buildPokemon() {
-        var sprite = (String) sprites.getOrDefault("front_default", null);
-        return new Pokemon(name, sprite);
+    public Optional<Pokemon> buildPokemon() {
+        var sprite = (String) sprites.get("front_default");
+        if (sprite != null)
+            return Optional.of(new Pokemon(name, sprite));
+        return Optional.empty();
     }
 }
