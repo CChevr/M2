@@ -1,44 +1,24 @@
 package fr.uge.jee.springmvc.pokematch.models;
 
 import fr.uge.jee.springmvc.pokematch.api.IPokeAPI;
-import fr.uge.jee.springmvc.pokematch.api.Sprites;
 
 import java.util.*;
 
 public class Pokedex {
-    private final IPokeAPI pokeAPI;
-    private final int maxSize;
-    private final Map<Integer, Pokemon> pokemons = new HashMap<>();
+    private final Map<Integer, Pokemon> pokemons;
 
-    private Sprites sprites;
-
-    private Pokedex(IPokeAPI pokeAPI, int maxSize) {
-        this.pokeAPI = Objects.requireNonNull(pokeAPI);
-        this.maxSize = maxSize;
+    private Pokedex(Map<Integer, Pokemon> pokemons) {
+        this.pokemons = Objects.requireNonNull(pokemons);
     }
 
     /**
      * Add the provided pokemons' list to the pokedex
      * @param pokemons pokemon list to add
      */
-    private void addPokemons(List<Pokemon> pokemons) {
-        //this.pokemons.addAll(pokemons.stream().limit(Math.min(maxSize, pokemons.size())).collect(Collectors.toList()));
-        for(var i = 0; i < pokemons.size() && pokemons.size() < maxSize; i++) {
-            var pokemon = pokemons.get(i);
-            this.pokemons.put(pokemon.hashCode(), pokemon);
-        }
-    }
-
-    /**
-     * Fill pokemon from the api
-     */
-    public void fillPokemons() {
-        while(pokeAPI.hasNext() && pokemons.size() < maxSize) {
-            var answer = pokeAPI.getNext();
-            if (answer.isEmpty()) break;
-            var pokeresponse = answer.get();
-            addPokemons(pokeresponse.getPokemons());
-        }
+    private static HashMap<Integer, Pokemon> getPokemonMap(List<Pokemon> pokemons) {
+        var pokemonMap = new HashMap<Integer, Pokemon>();
+        pokemons.forEach(p -> pokemonMap.put(p.getName().hashCode(), p));
+        return pokemonMap;
     }
 
     /**
@@ -48,9 +28,8 @@ public class Pokedex {
      * @return Pokedex with all pokemons
      */
     public static Pokedex build(IPokeAPI pokeAPI, int maxSize) {
-        var pokedex = new Pokedex(pokeAPI, maxSize);
-        pokedex.fillPokemons();
-        return pokedex;
+        var pokemons = pokeAPI.getPokemons(maxSize);
+        return new Pokedex(getPokemonMap(pokemons));
     }
 
     /**
@@ -84,14 +63,5 @@ public class Pokedex {
      */
     public List<Pokemon> getPokemons() {
         return new ArrayList<>(pokemons.values());
-    }
-
-    /**
-     * get an image of the given pokemon
-     * @param pokemon looking for an image
-     * @return the url of the image if it has been possible
-     */
-    public Optional<String> getPokemonImage(Pokemon pokemon) {
-        return pokemon.getImage(pokeAPI);
     }
 }

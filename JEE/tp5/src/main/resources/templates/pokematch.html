@@ -3,6 +3,7 @@
 <head>
     <title>Pokematch</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../static/css/pokematch.css" th:href="@{/css/pokematch.css}">
 </head>
 <body>
 <form action="#" th:action="@{/pokematch}" method="post" th:object="${user}">
@@ -16,12 +17,15 @@
         <span  th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Invalid Last Name</span></div>
 
     <div><button type="submit">Compute</button></div>
-
-    <!-- Affichage du pokemon fetiche -->
-    <div th:if="${pokemon} != null">
-        <h2>Pokémon fétiche :</h2>
-        <img th:src="${pokemon}" alt="image de pokemon"/>
-    </div>
 </form>
+
+<!-- Affichage du pokemon fetiche -->
+<div th:if="${pokemon}">
+    <h2>Pokémon fétiche : </h2>
+    <div class="favpoke">
+        <img th:src="${pokemon.image}" alt="image de pokemon"/>
+        <p th:text="${pokemon.name}" style="text-align: center">
+    </div>
+</div>
 </body>
 </html>

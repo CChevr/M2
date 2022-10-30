@@ -1,0 +1,10 @@
+.favpoke {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 200px;
+}
+
+body {
+    background-color: yellow;
+}
