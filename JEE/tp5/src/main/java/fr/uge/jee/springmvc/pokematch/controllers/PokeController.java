@@ -44,7 +44,6 @@ public class PokeController {
         var id = user.getFirstName().hashCode() + user.getLastName().hashCode();
         var pokemon = pokedex.getPokemon(id);
 
-        System.out.println(pokemon.getName() + " : " + pokemon.getImage());
         model.addAttribute("pokemon", pokemon);
 
         return "pokematch";

@@ -36,19 +36,18 @@ public class PokeAPI implements IPokeAPI {
     }
 
     public List<Pokemon> getPokemons(int limit) {
-        List<Pokemon> pokemons;
+        if (limit != 0) {
+            var monoLstRsp = webClient.get()
+                    .uri(url + "?offset=0&limit=" + limit)
+                    .retrieve()
+                    .bodyToMono(PokeListResponse.class);
 
-        if (limit <= 0) return List.of();
+            var lstRsp = monoLstRsp.block();
+            if (lstRsp != null) {
+                return readListResponse(lstRsp);
+            }
+        }
 
-        var monoLstRsp = webClient.get()
-                .uri(url+"?limit="+limit)
-                .retrieve()
-                .bodyToMono(PokeListResponse.class);
-
-        var lstRsp = monoLstRsp.block();
-        pokemons = readListResponse(lstRsp);
-
-        System.out.println("size : "+pokemons.size());
-        return pokemons;
+        return List.of();
     }
 }
