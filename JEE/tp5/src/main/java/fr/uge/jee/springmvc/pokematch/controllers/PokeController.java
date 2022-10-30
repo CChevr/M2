@@ -31,8 +31,6 @@ public class PokeController {
 
     @GetMapping("/pokematch")
     public String greeting(Model model, @ModelAttribute("hi") User user) {
-        model.addAttribute("user", user);
-        System.out.println(pokedex.getPokemons().size());
         return "pokematch";
     }
 
@@ -42,13 +40,12 @@ public class PokeController {
         if (bindingResult.hasErrors()) {
             return "pokematch";
         }
+
         var id = user.getFirstName().hashCode() + user.getLastName().hashCode();
         var pokemon = pokedex.getPokemon(id);
-        System.out.println(pokemon.getName());
         var image = pokedex.getPokemonImage(pokemon);
 
         if (image.isPresent()) {
-            System.out.println("img : " + image);
             model.addAttribute("pokemon", image.get());
         } else {
             System.out.println("No image found");
