@@ -1,7 +1,5 @@
 package fr.uge.jee.springmvc.pokematch.api;
 
-import fr.uge.jee.springmvc.pokematch.models.PokeDetails;
-
 import java.util.Optional;
 
 public interface IPokeAPI {

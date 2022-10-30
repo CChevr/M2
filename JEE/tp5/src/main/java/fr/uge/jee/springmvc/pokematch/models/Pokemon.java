@@ -1,9 +1,8 @@
-package fr.uge.jee.springmvc.pokematch.pokemon;
+package fr.uge.jee.springmvc.pokematch.models;
 
 import fr.uge.jee.springmvc.pokematch.api.IPokeAPI;
 import fr.uge.jee.springmvc.pokematch.api.PokeAPI;
-import fr.uge.jee.springmvc.pokematch.models.PokeDetails;
-import org.springframework.beans.factory.annotation.Autowired;
+import fr.uge.jee.springmvc.pokematch.api.PokeDetails;
 
 import java.util.Objects;
 import java.util.Optional;

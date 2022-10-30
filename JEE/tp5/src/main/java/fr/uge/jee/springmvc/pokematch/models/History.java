@@ -1,7 +1,5 @@
 package fr.uge.jee.springmvc.pokematch.models;
 
-import fr.uge.jee.springmvc.pokematch.pokemon.Pokemon;
-
 import java.util.ArrayList;
 import java.util.List;
 

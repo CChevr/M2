@@ -1,8 +1,6 @@
 package fr.uge.jee.springmvc.pokematch.api;
 
-import fr.uge.jee.springmvc.pokematch.models.PokeDetails;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
@@ -10,7 +8,7 @@ import java.util.Optional;
 public class PokeAPI implements IPokeAPI {
     @Value("${pokematch.pokeapi}")
     private String next;
-    private WebClient webClient;
+    private final WebClient webClient;
 
     public PokeAPI(WebClient webClient) {
         this.webClient = webClient;
