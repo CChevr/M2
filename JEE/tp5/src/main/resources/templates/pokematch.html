@@ -29,7 +29,7 @@
         <div th:if="${pokemon}">
             <h2>Favorite pokemon : </h2>
             <div class="pokemon">
-                <img th:src="@{'data:image/jpeg;base64,'+${pokemon.getImage(pokemon)}}" alt="image de pokemon"/>
+                <img th:src="@{'data:image/jpeg;base64,'+${pokemon.getImage()}}" alt="image de pokemon"/>
                 <p th:text="${pokemon.getName()}" style="text-align: center">
             </div>
         </div>
@@ -42,7 +42,7 @@
     <div class="history">
         <div th:each="p : ${history}">
             <div class="pokemon">
-                <img th:src="@{'data:image/jpeg;base64,'+${p.getImage(p)}}" alt="image de pokemon"/>
+                <img th:src="@{'data:image/jpeg;base64,'+${p.getImage()}}" alt="image de pokemon"/>
                 <p th:text="${p.getName()}" style="text-align: center">
             </div>
         </div>

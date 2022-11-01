@@ -29,9 +29,8 @@ public class Pokemon {
      */
 
 
-    @Cacheable(value = "images", key="#pokemon.name")
-    public String getImage(Pokemon pokemon) throws IOException {
-        System.out.println("Je suis entré ici");
+    @Cacheable(value = "images")
+    public String getImage() throws IOException {
         var url = new URL(this.image);
         InputStream in = new BufferedInputStream(url.openStream());
         return Base64.getEncoder().encodeToString(in.readAllBytes());
