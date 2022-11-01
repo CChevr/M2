@@ -1,10 +1,57 @@
-.favpoke {
+body {
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    background-color: yellow;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    background-color: #b1b100;
+    border-radius: 20px;
+    flex-wrap: wrap;
+    width: fit-content;
+    align-self: center;
+}
+
+.form {
+    margin: 5px;
+    min-width: 400px;
+}
+
+.form div {
+    display: flex;
+}
+
+.form div input {
+    margin-bottom: 5px;
+}
+
+.form div label{
+    width: 90px;
+    text-align: right;
+}
+
+.fetish {
+    margin: 5px;
+    flex-basis: 400em;
+}
+
+.pokemon {
     display: flex;
     justify-content: center;
     flex-direction: column;
     max-width: 200px;
+    background-color: #b1b100;
+    border-radius: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
 
-body {
-    background-color: yellow;
+.history {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }

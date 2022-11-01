@@ -2,6 +2,8 @@ package fr.uge.jee.springmvc.pokematch;
 
 import fr.uge.jee.springmvc.pokematch.api.IPokeAPI;
 import fr.uge.jee.springmvc.pokematch.api.PokeAPI;
+import fr.uge.jee.springmvc.pokematch.models.History;
+import fr.uge.jee.springmvc.pokematch.models.IHistory;
 import fr.uge.jee.springmvc.pokematch.models.Pokedex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -31,8 +33,10 @@ public class Config {
     }
 
     @Bean
+    IHistory history() { return new History(); }
+
+    @Bean
     Pokedex pokedex(IPokeAPI pokeAPI) {
         return Pokedex.build(pokeAPI, maxSize);
     }
-
 }

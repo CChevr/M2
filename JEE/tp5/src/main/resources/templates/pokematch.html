@@ -6,25 +6,46 @@
     <link rel="stylesheet" href="../static/css/pokematch.css" th:href="@{/css/pokematch.css}">
 </head>
 <body>
-<form action="#" th:action="@{/pokematch}" method="post" th:object="${user}">
-    <h2>Informations</h2>
-    <div><label for="f">First Name:</label>
-        <input id="f" type="text" th:field="*{firstName}">
-        <span  th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Invalid First Name</span></div>
+<div class="container">
+    <div class="form">
+        <form action="#" th:action="@{/pokematch}" method="post" th:object="${user}">
+            <h2>Informations</h2>
+            <div><label for="f">First Name:</label>
+                <input id="f" type="text" th:field="*{firstName}">
+                <span  th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Invalid First Name</span>
+            </div>
 
-    <div><label for="l">Last Name:</label>
-        <input type="text" id="l" th:field="*{lastName}">
-        <span  th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Invalid Last Name</span></div>
+            <div><label for="l">Last Name:</label>
+                <input type="text" id="l" th:field="*{lastName}">
+                <span  th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Invalid Last Name</span>
+            </div>
 
-    <div><button type="submit">Compute</button></div>
-</form>
+            <div><button type="submit">Compute</button></div>
+        </form>
+    </div>
 
-<!-- Affichage du pokemon fetiche -->
-<div th:if="${pokemon}">
-    <h2>Pokémon fétiche : </h2>
-    <div class="favpoke">
-        <img th:src="${pokemon.image}" alt="image de pokemon"/>
-        <p th:text="${pokemon.name}" style="text-align: center">
+    <!-- Affichage du pokemon fetiche -->
+    <div class="favorit">
+        <div th:if="${pokemon}">
+            <h2>Favorit pokemon : </h2>
+            <div class="pokemon">
+                <img th:src="${pokemon.image}" alt="image de pokemon"/>
+                <p th:text="${pokemon.name}" style="text-align: center">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Affichage de l'historique -->
+<div th:if="${history != null && history.size() > 0}">
+    <h2>History:</h2>
+    <div class="history">
+        <div th:each="p : ${history}">
+            <div class="pokemon">
+                <img th:src="${p.image}" alt="image de pokemon"/>
+                <p th:text="${p.name}" style="text-align: center">
+            </div>
+        </div>
     </div>
 </div>
 </body>
