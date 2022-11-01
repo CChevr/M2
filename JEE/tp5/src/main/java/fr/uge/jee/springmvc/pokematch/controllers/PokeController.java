@@ -6,8 +6,10 @@ import fr.uge.jee.springmvc.pokematch.models.Pokedex;
 import fr.uge.jee.springmvc.pokematch.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.validation.Valid;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Objects;
 
 @Controller
@@ -46,8 +52,8 @@ public class PokeController {
 
     @PostMapping("/pokematch")
     public String processForm(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
-
         if (bindingResult.hasErrors()) {
+            model.addAttribute("history", history.getLastPokemons(historySize));
             return "pokematch";
         }
 
@@ -55,8 +61,8 @@ public class PokeController {
         var pokemon = pokedex.getPokemon(id);
         history.addComputation(pokemon);
 
-        model.addAttribute("pokemon", pokemon);
         model.addAttribute("history", history.getLastPokemons(historySize));
+        model.addAttribute("pokemon", pokemon);
 
         return "pokematch";
     }

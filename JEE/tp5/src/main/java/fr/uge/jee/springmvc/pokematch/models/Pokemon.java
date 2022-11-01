@@ -1,7 +1,12 @@
 package fr.uge.jee.springmvc.pokematch.models;
 
-import org.springframework.stereotype.Component;
+import org.springframework.cache.annotation.Cacheable;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Base64;
 import java.util.Objects;
 
 public class Pokemon {
@@ -17,5 +22,18 @@ public class Pokemon {
         return name;
     }
 
-    public String getImage() { return image; }
+    /*
+    public String getImage() {
+        return image;
+    }
+     */
+
+
+    @Cacheable(value = "images", key="#pokemon.name")
+    public String getImage(Pokemon pokemon) throws IOException {
+        System.out.println("Je suis entré ici");
+        var url = new URL(this.image);
+        InputStream in = new BufferedInputStream(url.openStream());
+        return Base64.getEncoder().encodeToString(in.readAllBytes());
+    }
 }

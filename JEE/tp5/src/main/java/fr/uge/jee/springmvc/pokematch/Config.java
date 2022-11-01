@@ -6,6 +6,11 @@ import fr.uge.jee.springmvc.pokematch.models.History;
 import fr.uge.jee.springmvc.pokematch.models.IHistory;
 import fr.uge.jee.springmvc.pokematch.models.Pokedex;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,11 +18,20 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @PropertySource("classpath:pokematch.properties")
+@EnableCaching
 public class Config {
     @Value("${pokematch.pokesize}")
     private int maxSize;
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("images");
+    }
 
     @Bean
     WebClient getWebClient(WebClient.Builder defaultBuilder) {
