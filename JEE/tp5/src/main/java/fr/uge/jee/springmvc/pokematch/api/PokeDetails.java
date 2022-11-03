@@ -28,7 +28,11 @@ public class PokeDetails {
     }
 
     public Optional<Pokemon> buildPokemon() {
-        var sprite = (String) sprites.get("front_default");
+        String sprite = null;
+
+        if (sprites != null)
+            sprite = (String) sprites.get("front_default");
+
         if (sprite != null)
             return Optional.of(new Pokemon(name, sprite));
         return Optional.empty();

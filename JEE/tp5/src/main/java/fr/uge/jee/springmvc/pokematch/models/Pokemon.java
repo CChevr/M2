@@ -1,6 +1,7 @@
 package fr.uge.jee.springmvc.pokematch.models;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.thymeleaf.context.IContext;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -11,11 +12,11 @@ import java.util.Objects;
 
 public class Pokemon {
     private final String name;
-    private final String image;
+    private final String imageURL;
 
-    public Pokemon(String name, String image) {
+    public Pokemon(String name, String imageURL) {
         this.name = Objects.requireNonNull(name);
-        this.image = image;
+        this.imageURL = imageURL;
     }
 
     public String getName() {
@@ -28,10 +29,14 @@ public class Pokemon {
     }
      */
 
+    public String getImageURL() {
+        return imageURL;
+    }
 
-    @Cacheable(value = "images")
+
+    @Cacheable(value = "images", key="#target.name")
     public String getImage() throws IOException {
-        var url = new URL(this.image);
+        var url = new URL(this.imageURL);
         InputStream in = new BufferedInputStream(url.openStream());
         return Base64.getEncoder().encodeToString(in.readAllBytes());
     }
