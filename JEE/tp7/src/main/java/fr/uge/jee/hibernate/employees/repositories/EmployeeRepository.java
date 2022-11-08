@@ -93,7 +93,7 @@ public class EmployeeRepository {
 
     public List<Employee> getAll() {
         Function<EntityManager, List<Employee>> function = (EntityManager em) -> {
-            var q = "SELECT * FROM EMPLOYEE";
+            var q = "SELECT e FROM Employee e";
             return em.createQuery(q).getResultList();
         };
 
