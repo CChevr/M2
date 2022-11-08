@@ -27,7 +27,7 @@ public class Application {
         var homer = employees.stream()
                 .filter(e -> e.getFirstName().equals("Homer"))
                 .findFirst();
-        homer.ifPresent(h -> employeeRepository.update(h.getId(), 100));
+        homer.ifPresent(h -> employeeRepository.update(h.getId()));
 
         // affiche tous les employées dans la base de données
         employeeRepository.getAll().forEach(System.out::println);

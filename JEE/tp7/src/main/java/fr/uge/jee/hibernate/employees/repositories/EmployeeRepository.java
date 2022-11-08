@@ -57,10 +57,35 @@ public class EmployeeRepository {
     /**
      * Update the salary of the employee with the given id
      * @param id
-     * @param salary
      * @return true if the removal was successful
      */
 
+    public boolean update(long id) {
+        var min = 1000;
+        var increase = 100;
+        var percentage = 0.1;
+
+        Function<EntityManager, Employee> function = (EntityManager em) -> {
+            var employee = em.find(Employee.class, id);
+            if (null == employee)
+                return null;
+
+            var salary = employee.getSalary();
+
+            if (salary < min) {
+                salary += increase;
+            } else {
+                salary += salary * percentage;
+            }
+
+            employee.setSalary(salary);
+            return employee;
+        };
+
+        return (null != PersistenceUtils.inTransaction(function));
+    }
+
+    /*
     public boolean update(long id, int salary) {
         Function<EntityManager, Employee> function = (EntityManager em) -> {
             var employee = em.find(Employee.class, id);
@@ -72,6 +97,7 @@ public class EmployeeRepository {
 
         return (null != PersistenceUtils.inTransaction(function));
     }
+    */
 
     /**
      * Retrieve the employee with the given id
