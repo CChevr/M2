@@ -1,5 +1,8 @@
 package fr.uge.jee.hibernate.employees;
 
+import fr.uge.jee.hibernate.employees.models.Employee;
+import fr.uge.jee.hibernate.employees.repositories.PersistenceUtils;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.Objects;
@@ -23,7 +26,7 @@ public class Application {
     public static void main(String[] args) {
         var harry = new Employee("Harry", "Potter", 1000);
         System.out.println(harry);
-        EntityManagerFactory emf = PersistenceUtils.getEntityManagerFactory();
-        saveEmployee(emf.createEntityManager(), harry);
+        //EntityManagerFactory emf = PersistenceUtils.getEntityManagerFactory();
+        //saveEmployee(emf.createEntityManager(), harry);
     }
 }

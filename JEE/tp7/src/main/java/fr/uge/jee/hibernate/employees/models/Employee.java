@@ -1,4 +1,4 @@
-package fr.uge.jee.hibernate.employees;
+package fr.uge.jee.hibernate.employees.models;
 
 import javax.persistence.*;
 import java.util.Objects;
