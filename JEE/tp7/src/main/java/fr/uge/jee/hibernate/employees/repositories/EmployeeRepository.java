@@ -125,4 +125,19 @@ public class EmployeeRepository {
 
         return PersistenceUtils.inTransaction(function);
     }
+
+    /**
+     * envoie la liste des employés ayant un prénom donné.
+     * @param firstName
+     * @return
+     */
+
+    List<Employee> getAllByFirstName(String firstName) {
+        Function<EntityManager, List<Employee>> function = (EntityManager em) -> {
+            var q = "SELECT e FROM Employee WHERE e.firstName = :firstName";
+            return em.createQuery(q).getResultList();
+        };
+
+        return PersistenceUtils.inTransaction(function);
+    }
 }

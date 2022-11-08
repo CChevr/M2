@@ -29,6 +29,11 @@ public class Application {
                 .findFirst();
         homer.ifPresent(h -> employeeRepository.update(h.getId()));
 
+        // rajoutez 100 euros à tous les employés qui gagnent moins de 550 euros.
+        employeeRepository.getAll().stream()
+                .filter(e -> e.getSalary() < 550)
+                .forEach(e -> employeeRepository.update(e.getId()));
+
         // affiche tous les employées dans la base de données
         employeeRepository.getAll().forEach(System.out::println);
     }
