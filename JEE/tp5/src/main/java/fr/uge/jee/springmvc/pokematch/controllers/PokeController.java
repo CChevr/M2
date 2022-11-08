@@ -55,6 +55,7 @@ public class PokeController {
         }
 
         var id = user.getFirstName().hashCode() + user.getLastName().hashCode();
+        System.out.println(user.getFirstName() + " " + user.getLastName() + " = " + id);
         var pokemon = pokedex.getPokemon(id);
         history.addComputation(pokemon);
 

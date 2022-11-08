@@ -41,7 +41,7 @@ public class Config {
     IPokeAPI pokeAPI(WebClient getWebClient) {
         return new PokeAPI(getWebClient);
     }
-     */
+    */
 
     @Bean
     IPokeAPI pokeGQL(WebClient getWebClient) {

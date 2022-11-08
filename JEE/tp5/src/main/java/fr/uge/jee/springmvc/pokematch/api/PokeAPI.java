@@ -12,8 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PokeAPI implements IPokeAPI {
-    @Value("${pokematch.pokeapi}")
-    private String url;
+    private String url = "https://pokeapi.co/api/v2/pokemon/";
     private final WebClient webClient;
 
     public PokeAPI(WebClient webClient) {

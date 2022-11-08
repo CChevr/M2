@@ -46,7 +46,7 @@ public class PokeDetailsGQL {
                 computeMap();
             }
 
-            if (map.containsKey(sprite) )
+            if (map.containsKey(sprite))
                 return Optional.of(map.get(sprite));
             return Optional.empty();
         }

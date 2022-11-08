@@ -1,0 +1,8 @@
+query getPokemonsLimit($RefNumber : Int!) {
+  pokemon_v2_pokemon(limit: $RefNumber) {
+    name
+    pokemon_v2_pokemonsprites {
+      sprites
+    }
+  }
+}

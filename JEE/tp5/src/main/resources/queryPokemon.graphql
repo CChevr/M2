@@ -1,5 +1,5 @@
-query getPokemons($RefNumber : Int!) {
-  pokemon_v2_pokemon(limit: $RefNumber) {
+query getPokemons {
+  pokemon_v2_pokemon {
     name
     pokemon_v2_pokemonsprites {
       sprites
