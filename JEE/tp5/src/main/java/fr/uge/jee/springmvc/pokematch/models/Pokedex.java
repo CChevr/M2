@@ -1,7 +1,10 @@
 package fr.uge.jee.springmvc.pokematch.models;
 
 import fr.uge.jee.springmvc.pokematch.api.IPokeAPI;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Pokedex {

@@ -41,7 +41,9 @@ public class History implements IHistory {
     }
 
     public void addComputation(Pokemon pokemon){
-        history.merge(pokemon.getName(), new Data(pokemon), Data::merge);
+        synchronized(history) {
+            history.merge(pokemon.getName(), new Data(pokemon), Data::merge);
+        }
     }
 
     private static int lastComporator(Map.Entry<String, Data> a, Map.Entry<String, Data> b) {
@@ -49,18 +51,24 @@ public class History implements IHistory {
     }
 
     public List<Pokemon> getLastPokemons(int size) {
-        return history.entrySet().stream()
-                .sorted(History::lastComporator)
-                .map(x -> x.getValue().getPokemon())
-                .limit(size)
-                .collect(Collectors.toList());
+        synchronized (history) {
+            return history.entrySet().stream()
+                    .sorted(History::lastComporator)
+                    .map(x -> x.getValue().getPokemon())
+                    .limit(size)
+                    .collect(Collectors.toList());
+        }
     }
 
     public boolean isEmpty(){
-        return history.isEmpty();
+        synchronized (history) {
+            return history.isEmpty();
+        }
     }
 
     public List<Pokemon> getPastComputations(){
-        return history.values().stream().map(Data::getPokemon).collect(Collectors.toList());
+        synchronized (history) {
+            return history.values().stream().map(Data::getPokemon).collect(Collectors.toList());
+        }
     }
 }
