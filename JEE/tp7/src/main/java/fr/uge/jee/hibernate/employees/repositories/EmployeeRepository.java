@@ -4,7 +4,10 @@ import fr.uge.jee.hibernate.employees.models.Employee;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.swing.text.Utilities;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -59,7 +62,15 @@ public class EmployeeRepository {
      */
 
     public boolean update(long id, int salary) {
-        //TODO
+        Function<EntityManager, Employee> function = (EntityManager em) -> {
+            var employee = em.find(Employee.class, id);
+            if (null == employee)
+                return null;
+            employee.setSalary(salary);
+            return employee;
+        };
+
+        return (null != PersistenceUtils.inTransaction(function));
     }
 
     /**
@@ -69,7 +80,11 @@ public class EmployeeRepository {
      */
 
     public Optional<Employee> get(long id) {
-        // TODO
+        Function<EntityManager, Employee> function = (EntityManager em) -> {
+            return em.find(Employee.class, id);
+        };
+
+        return Optional.ofNullable(PersistenceUtils.inTransaction(function));
     }
 
     /**
@@ -77,6 +92,11 @@ public class EmployeeRepository {
      */
 
     public List<Employee> getAll() {
-        // TODO
+        Function<EntityManager, List<Employee>> function = (EntityManager em) -> {
+            var q = "SELECT * FROM EMPLOYEE";
+            return em.createQuery(q).getResultList();
+        };
+
+        return PersistenceUtils.inTransaction(function);
     }
 }
