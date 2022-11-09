@@ -101,3 +101,11 @@ explain analyze select cip7, cc.cis, denom from bdpm_cis as c join bdpm_ciscip2 
 On peut remarquer que la première exécution (Cold run) de la requête est plus longue que la seconde exécution(Cold run). cela est du au fait que le résultat de la requête est stocké en cache
 
 ## 3.2 No denormalization, indexes
+
+```sql
+CREATE INDEX cis ON bdpm_cis(cis);
+```
+
+```sql
+CREATE INDEX cis_ciscip ON bdpm_ciscip2(cis);
+```
