@@ -18,7 +18,7 @@ import java.util.Objects;
 public class PokeController {
     private Pokedex pokedex;
     private IHistory history;
-    @Value("${pokematch.historysize}")
+    @Value("${pokematch.historySize}")
     private int historySize;
 
     @ModelAttribute("user")

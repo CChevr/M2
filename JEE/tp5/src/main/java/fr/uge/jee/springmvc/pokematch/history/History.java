@@ -48,7 +48,7 @@ public class History implements IHistory {
         }
     }
 
-    private static int lastComporator(Map.Entry<String, Data> a, Map.Entry<String, Data> b) {
+    private static int lastComparator(Map.Entry<String, Data> a, Map.Entry<String, Data> b) {
         return b.getValue().getCount() - a.getValue().getCount();
     }
 
@@ -59,7 +59,7 @@ public class History implements IHistory {
 
         synchronized (history) {
             return history.entrySet().stream()
-                    .sorted(History::lastComporator)
+                    .sorted(History::lastComparator)
                     .map(x -> x.getValue().getPokemon())
                     .limit(size)
                     .collect(Collectors.toList());
