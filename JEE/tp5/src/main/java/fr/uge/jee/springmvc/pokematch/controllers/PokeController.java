@@ -1,23 +1,16 @@
 package fr.uge.jee.springmvc.pokematch.controllers;
 
-import fr.uge.jee.springmvc.pokematch.models.History;
-import fr.uge.jee.springmvc.pokematch.models.IHistory;
+import fr.uge.jee.springmvc.pokematch.history.IHistory;
 import fr.uge.jee.springmvc.pokematch.models.Pokedex;
 import fr.uge.jee.springmvc.pokematch.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Objects;
 
 @Controller
@@ -55,7 +48,6 @@ public class PokeController {
         }
 
         var id = user.getFirstName().hashCode() + user.getLastName().hashCode();
-        System.out.println(user.getFirstName() + " " + user.getLastName() + " = " + id);
         var pokemon = pokedex.getPokemon(id);
         history.addComputation(pokemon);
 
