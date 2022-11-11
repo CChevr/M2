@@ -95,6 +95,27 @@ public class StudentRepository {
         }
     }
 
+    public Optional<University> getUniversity(long id) {
+        Function<EntityManager, Student> function = em -> {
+            var query = "SELECT s FROM Student s LEFT JOIN FETCH s.university WHERE s.id = :id";
+            var response = em.createQuery(query, Student.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+
+            if (null == response) {
+                throw new IllegalArgumentException("wrong id");
+            }
+            return response;
+        };
+
+        try {
+            return Optional.of(PersistenceUtils.inTransaction(function).getUniversity());
+        } catch(Exception e) {
+            return Optional.empty();
+        }
+
+    }
+
     /**
      * Set student's university
      * @param id id of the student
@@ -114,7 +135,8 @@ public class StudentRepository {
                 throw new IllegalArgumentException("wrong id");
             }
 
-            student.setUniversity(university);
+            // TODO faire attention si transient ou detached
+            student.setUniversity(em.merge(university));
         };
 
         try {
@@ -135,13 +157,16 @@ public class StudentRepository {
         Objects.requireNonNull(address);
 
         Consumer<EntityManager> consumer = em -> {
-            var student = getStudent(id);
+            var query = "SELECT s FROM Student s LEFT JOIN FETCH s.address WHERE s.id = :id";
+            var student = em.createQuery(query, Student.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
 
-            if (student.isEmpty()) {
+            if (null == student) {
                 throw new IllegalArgumentException("wrong id");
             }
 
-            student.get().setAddress(address);
+            student.setAddress(address);
         };
 
         try {
