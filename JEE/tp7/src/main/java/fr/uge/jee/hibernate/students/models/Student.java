@@ -30,10 +30,8 @@ public class Student {
 
     public Student() {}
 
-    public Student(Address address, List<Comment> comments, Set<Lecture> lectures, University University) {
+    public Student(Address address, University university) {
         this.address = Objects.requireNonNull(address);
-        this.comments = Objects.requireNonNull(comments);
-        this.lectures = Objects.requireNonNull(lectures);
         this.university = Objects.requireNonNull(university);
     }
 

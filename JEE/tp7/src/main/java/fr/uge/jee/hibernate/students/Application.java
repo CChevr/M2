@@ -1,27 +1,30 @@
 package fr.uge.jee.hibernate.students;
 
-import fr.uge.jee.hibernate.students.models.*;
-import fr.uge.jee.hibernate.students.repositories.StudentRepository;
+import fr.uge.jee.hibernate.students.repositories.LectureRepository;
+import fr.uge.jee.hibernate.students.repositories.UniversityRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.function.Supplier;
 
 public class Application {
+    private static void testCommand(Supplier<Boolean> supplier, String name) {
+        if (!supplier.get()) {
+            System.out.println("Something gone wrong with "+name);
+        } else {
+            System.out.println("OK - "+name);
+        }
+    }
+
     public static void main(String[] args) {
-        var address = new Address();
-        address.setCity("Champs sur Marne");
-        address.setStreetNumber(24);
-        address.setStreet("Rue de la paix");
+        // Creation deletion universities
+        var universityRepository = new UniversityRepository();
+        var upem = universityRepository.create("UPEM");
+        var uge = universityRepository.create("Gustave Eiffel");
+        testCommand(() -> universityRepository.delete(upem), "upem");
 
-        var university = new University();
-        university.setName("Gustave Eiffel");
-
-        var lectures = new HashSet<Lecture>();
-
-        var comments = new ArrayList<Comment>();
-
-        var studentRepository = new StudentRepository();
-        //var id = studentRepository.create(address, comments, lectures, university);
-        //System.out.println("id : "+id);
+        // Creation deletion lectures
+        var lectureRepository = new LectureRepository();
+        var francais = lectureRepository.create("Français");
+        var math = lectureRepository.create("Mathématiques");
+        testCommand(() -> lectureRepository.delete(francais), "français");
     }
 }
