@@ -67,7 +67,7 @@ public class StudentRepository {
 
     public Optional<Set<Lecture>> getLectures(long id) {
         Function<EntityManager, Set<Lecture>> function = em -> {
-            var query = "SELECT s FROM Student s WHERE id = :id";
+            var query = "SELECT s FROM Student s LEFT JOIN FETCH s.lectures WHERE s.id = :id";
             var student = em.createQuery(query, Student.class)
                     .setParameter("id", id)
                     .getSingleResult();

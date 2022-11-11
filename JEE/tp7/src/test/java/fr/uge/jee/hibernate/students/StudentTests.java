@@ -87,12 +87,13 @@ public class StudentTests {
 
         try {
             tx.begin();
-            var query = "DELETE FROM UNIVERSITIES CASCADE;" +
-                    "DELETE FROM ADDRESSES CASCADE;" +
-                    " DELETE FROM COMMENTS CASCADE;" +
-                    " DELETE FROM LECTURES CASCADE;" +
-                    " DELETE FROM STUDENTS CASCADE;" +
-                    " DELETE FROM STUDENTS_LECTURES CASCADE;";
+            var query = "DELETE FROM STUDENTS_LECTURES CASCADE; " +
+                    "DELETE FROM COMMENTS CASCADE; " +
+                    "DELETE FROM LECTURES CASCADE; " +
+                    "DELETE FROM STUDENTS CASCADE; " +
+                    "DELETE FROM ADDRESSES CASCADE; " +
+                    "DELETE FROM UNIVERSITIES CASCADE; "
+                    ;
             em.createNativeQuery(query).executeUpdate();
             tx.commit();
         } catch(Exception e) {
@@ -127,9 +128,9 @@ public class StudentTests {
     @Test
     @DisplayName("University DB Registration without name")
     void UniversityDBRegistrationWithoutName() {
-        var em = emf.createEntityManager();
         assertThrows(NullPointerException.class, () -> universityRepository.create(null));
 
+        var em = emf.createEntityManager();
         var countQuerry = "SELECT count(u) FROM University u";
         var count = em.createQuery(countQuerry).getResultList();
         assertEquals(0L, count.get(0));
