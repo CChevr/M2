@@ -66,4 +66,12 @@ public class Student {
     public void addLectures(Lecture lecture) {
         this.lectures.add(lecture);
     }
+
+    public University getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
+    }
 }

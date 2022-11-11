@@ -128,7 +128,7 @@ public class StudentTests {
     @Test
     @DisplayName("University DB Registration without name")
     void UniversityDBRegistrationWithoutName() {
-        assertThrows(NullPointerException.class, () -> universityRepository.create(null));
+        assertThrows(NullPointerException.class, () -> universityRepository.create((String) null));
 
         var em = emf.createEntityManager();
         var countQuerry = "SELECT count(u) FROM University u";
@@ -242,5 +242,20 @@ public class StudentTests {
     @DisplayName("Add unkown lecture to an unknown student")
     void AddUnkownLectureToUnkownStudent() {
         assertThrows(NullPointerException.class, () -> studentRepository.addLecture(-1, null));
+    }
+
+    @Test
+    @DisplayName("Change Student Unversity")
+    void ChangeStudentUniversity() {
+        var idStudent = studentRepository.create(getAddress1(), getUniversity1());
+        var student = studentRepository.getStudent(idStudent);
+
+        assertTrue(student.isPresent());
+        assertEquals(getUniversity1().getName(), student.get().getUniversity().getName());
+
+        assertTrue(studentRepository.setUniversity(idStudent, getUniversity2()));
+        student = studentRepository.getStudent(idStudent);
+        assertTrue(student.isPresent());
+        assertEquals(getUniversity2().getName(), student.get().getUniversity().getName());
     }
 }
