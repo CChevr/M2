@@ -4,6 +4,7 @@ import fr.uge.jee.hibernate.students.models.Lecture;
 
 import javax.persistence.EntityManager;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -45,6 +46,22 @@ public class LectureRepository {
             return true;
         } catch(Exception e) {
             return false;
+        }
+    }
+
+    public Optional<Lecture> getLecture(long id) {
+        Function<EntityManager, Lecture> function = em -> {
+            var lecture = em.find(Lecture.class, id);
+            if (null == lecture) {
+                throw new IllegalArgumentException("wrong id");
+            }
+            return lecture;
+        };
+
+        try {
+            return Optional.of(PersistenceUtils.inTransaction(function));
+        } catch(Exception e) {
+            return Optional.empty();
         }
     }
 }

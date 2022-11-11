@@ -1,6 +1,6 @@
 package fr.uge.jee.hibernate.students;
 
-import fr.uge.jee.hibernate.students.models.Student;
+import fr.uge.jee.hibernate.students.models.*;
 import fr.uge.jee.hibernate.students.repositories.PersistenceUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +19,66 @@ public class StudentTests {
     private final LectureRepository lectureRepository = new LectureRepository();
     private final StudentRepository studentRepository = new StudentRepository();
     private final UniversityRepository universityRepository = new UniversityRepository();
+
+    private Address getAddress1() {
+        return new Address(11, "Rue de la paix", "Paris");
+    }
+
+    private Address getAddress2() {
+        return new Address(1, "Avenue de la résistance", "Chelles");
+    }
+
+    private Address getAddress3() {
+        return new Address(101, "Boulevard Napoleon", "Lyon");
+    }
+
+    private Comment getComment1() {
+        return new Comment("Commentaire n°1");
+    }
+
+    private Comment getComment2() {
+        return new Comment("Commentaire n°2");
+    }
+
+    private Comment getComment3() {
+        return new Comment("Commentaire n°3");
+    }
+
+    private Lecture getLecture1() {
+        return new Lecture("Mathematics");
+    }
+
+    private Lecture getLecture2() {
+        return new Lecture("French");
+    }
+
+    private Lecture getLecture3() {
+        return new Lecture("Music");
+    }
+
+    private University getUniversity1() {
+        return new University("UGE");
+    }
+
+    private University getUniversity2() {
+        return new University("UPEM");
+    }
+
+    private University getUniversity3() {
+        return new University("Université Marne la vallée");
+    }
+
+    private Student getStudent1() {
+        return new Student(getAddress1(), getUniversity1());
+    }
+
+    private Student getStudent2() {
+        return new Student(getAddress2(), getUniversity2());
+    }
+
+    private Student getStudent3() {
+        return new Student(getAddress3(), getUniversity3());
+    }
 
     @BeforeEach
     void dropTables() {
@@ -142,7 +202,22 @@ public class StudentTests {
         assertFalse(() -> lectureRepository.delete(-1L));
     }
 
-    // Rajouter un cours à un étudiant
+    @Test
+    @DisplayName("Add Lecture to studient")
+    void AddLectureToStudent() {
+        var idLecture = lectureRepository.create(getLecture1().getName());
+        var idStudent = studentRepository.create(getAddress1(), getUniversity1());
+
+        var lecture = lectureRepository.getLecture(idLecture);
+        System.out.println("idLecture: "+idLecture);
+        assertTrue(lecture.isPresent());
+
+        studentRepository.addLecture(idStudent, lecture.get());
+        var lectures = studentRepository.getLectures(idStudent);
+
+        assertTrue(lectures.isPresent());
+        assertEquals(1, lectures.get().size());
+    }
     // Ajouter un cours à un étudiant
     // Ajouter un cours à un étudiant qui n'existe pas
     // Ajouter un cours qui n'existe pas à un étudiant

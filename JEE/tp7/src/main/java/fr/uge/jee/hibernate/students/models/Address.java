@@ -1,6 +1,7 @@
 package fr.uge.jee.hibernate.students.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "addresses")
@@ -12,6 +13,18 @@ public class Address {
     private int streetNumber;
     private String street;
     private String city;
+
+    public Address() {}
+
+    public Address(int streetNumber, String street, String city) {
+        Objects.requireNonNull(this.street = street);
+        Objects.requireNonNull(this.city = city);
+
+        if (streetNumber < 1) {
+            throw new IllegalArgumentException("street number must be positive");
+        }
+        this.streetNumber = streetNumber;
+    }
 
     public int getId() {
         return id;

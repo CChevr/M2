@@ -11,7 +11,7 @@ public class Student {
     @Id
     @GeneratedValue
     @Column(name = "studentid")
-    private int id;
+    private long id;
     // agrégation
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "Address_Id")
@@ -35,7 +35,7 @@ public class Student {
         this.university = Objects.requireNonNull(university);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -51,7 +51,7 @@ public class Student {
         return lectures;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -63,7 +63,7 @@ public class Student {
         this.comments = comments;
     }
 
-    public void setLectures(Set<Lecture> lectures) {
-        this.lectures = lectures;
+    public void addLectures(Lecture lecture) {
+        this.lectures.add(lecture);
     }
 }
