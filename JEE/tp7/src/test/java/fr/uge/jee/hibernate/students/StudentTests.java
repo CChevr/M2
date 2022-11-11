@@ -210,7 +210,6 @@ public class StudentTests {
         var idStudent = studentRepository.create(getAddress1(), getUniversity1());
 
         var lecture = lectureRepository.getLecture(idLecture);
-        System.out.println("idLecture: "+idLecture);
         assertTrue(lecture.isPresent());
 
         studentRepository.addLecture(idStudent, lecture.get());
@@ -219,8 +218,29 @@ public class StudentTests {
         assertTrue(lectures.isPresent());
         assertEquals(1, lectures.get().size());
     }
-    // Ajouter un cours à un étudiant
-    // Ajouter un cours à un étudiant qui n'existe pas
-    // Ajouter un cours qui n'existe pas à un étudiant
-    // Ajouter un cours qui n'existe pas à un étudiant qui n'existe pas
+
+    @Test
+    @DisplayName("Add lecture to an unknown student")
+    void AddLectureToUnknownStudent() {
+        var idLecture = lectureRepository.create(getLecture1().getName());
+
+        var lecture = lectureRepository.getLecture(idLecture);
+        assertTrue(lecture.isPresent());
+
+        assertFalse(studentRepository.addLecture(-1L, lecture.get()));
+    }
+
+    @Test
+    @DisplayName("Add unkown lecture to a Student")
+    void AddUnknownLectureToStudent() {
+        var idStudent = studentRepository.create(getAddress1(), getUniversity1());
+
+        assertThrows(NullPointerException.class, () -> studentRepository.addLecture(idStudent, null));
+    }
+
+    @Test
+    @DisplayName("Add unkown lecture to an unknown student")
+    void AddUnkownLectureToUnkownStudent() {
+        assertThrows(NullPointerException.class, () -> studentRepository.addLecture(-1, null));
+    }
 }
