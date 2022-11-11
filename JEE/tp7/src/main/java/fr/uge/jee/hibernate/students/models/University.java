@@ -1,6 +1,7 @@
 package fr.uge.jee.hibernate.students.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Universities")
@@ -8,10 +9,16 @@ public class University {
     @Id
     @GeneratedValue
     @Column(name = "universityid")
-    private int id;
+    private long id;
     private String name;
 
-    public int getId() {
+    public University() {}
+
+    public University(String name) {
+        this.name = Objects.requireNonNull(name);
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -19,7 +26,7 @@ public class University {
         return name;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

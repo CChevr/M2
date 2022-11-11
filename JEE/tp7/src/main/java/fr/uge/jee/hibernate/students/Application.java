@@ -21,7 +21,7 @@ public class Application {
         var comments = new ArrayList<Comment>();
 
         var studentRepository = new StudentRepository();
-        var id = studentRepository.create(address, comments, lectures, university);
+        //var id = studentRepository.create(address, comments, lectures, university);
         //System.out.println("id : "+id);
     }
 }
