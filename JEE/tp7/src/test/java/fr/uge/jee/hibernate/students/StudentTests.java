@@ -120,8 +120,8 @@ public class StudentTests {
         var em = emf.createEntityManager();
         assertDoesNotThrow(() -> universityRepository.create(getUniversity1()));
 
-        var countQuerry = "SELECT count(u) FROM University u";
-        var count = em.createQuery(countQuerry).getResultList();
+        var countQuery = "SELECT count(u) FROM University u";
+        var count = em.createQuery(countQuery).getResultList();
         assertEquals(1L, count.get(0));
     }
 
@@ -131,8 +131,8 @@ public class StudentTests {
         assertThrows(IllegalArgumentException.class, () -> universityRepository.create(null));
 
         var em = emf.createEntityManager();
-        var countQuerry = "SELECT count(u) FROM University u";
-        var count = em.createQuery(countQuerry).getResultList();
+        var countQuery = "SELECT count(u) FROM University u";
+        var count = em.createQuery(countQuery).getResultList();
         assertEquals(0L, count.get(0));
     }
 
@@ -142,13 +142,13 @@ public class StudentTests {
         var em = emf.createEntityManager();
         var id = universityRepository.create(getUniversity1());
 
-        var countQuerry = "SELECT count(u) FROM University u";
-        var count = em.createQuery(countQuerry).getResultList();
+        var countQuery = "SELECT count(u) FROM University u";
+        var count = em.createQuery(countQuery).getResultList();
         assertEquals(1L, count.get(0));
 
         assertTrue(() -> universityRepository.delete(id));
 
-        count = em.createQuery(countQuerry).getResultList();
+        count = em.createQuery(countQuery).getResultList();
         assertEquals(0L, count.get(0));
     }
 
@@ -165,8 +165,8 @@ public class StudentTests {
         var em = emf.createEntityManager();
         assertDoesNotThrow(() -> lectureRepository.create("Mathematics"));
 
-        var countQuerry = "SELECT count(l) FROM Lecture l";
-        var count = em.createQuery(countQuerry).getResultList();
+        var countQuery = "SELECT count(l) FROM Lecture l";
+        var count = em.createQuery(countQuery).getResultList();
         assertEquals(1L, count.get(0));
     }
 
@@ -176,8 +176,8 @@ public class StudentTests {
         var em = emf.createEntityManager();
         assertThrows(NullPointerException.class, () -> lectureRepository.create(null));
 
-        var countQuerry = "SELECT count(l) FROM Lecture l";
-        var count = em.createQuery(countQuerry).getResultList();
+        var countQuery = "SELECT count(l) FROM Lecture l";
+        var count = em.createQuery(countQuery).getResultList();
         assertEquals(0L, count.get(0));
     }
 
@@ -187,13 +187,13 @@ public class StudentTests {
         var em = emf.createEntityManager();
         var id = lectureRepository.create("Mathematics");
 
-        var countQuerry = "SELECT count(l) FROM Lecture l";
-        var count = em.createQuery(countQuerry).getResultList();
+        var countQuery = "SELECT count(l) FROM Lecture l";
+        var count = em.createQuery(countQuery).getResultList();
         assertEquals(1L, count.get(0));
 
         assertTrue(() -> lectureRepository.delete(id));
 
-        count = em.createQuery(countQuerry).getResultList();
+        count = em.createQuery(countQuery).getResultList();
         assertEquals(0L, count.get(0));
     }
 
@@ -204,7 +204,7 @@ public class StudentTests {
     }
 
     @Test
-    @DisplayName("Add Lecture to studient")
+    @DisplayName("Add Lecture to student")
     void AddLectureToStudent() {
         var idLecture = lectureRepository.create(getLecture1().getName());
         var idStudent = studentRepository.create(getStudent1());
