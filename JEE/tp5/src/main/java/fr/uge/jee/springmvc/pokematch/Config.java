@@ -1,14 +1,12 @@
 package fr.uge.jee.springmvc.pokematch;
 
 import fr.uge.jee.springmvc.pokematch.api.IPokeAPI;
-import fr.uge.jee.springmvc.pokematch.api.PokeAPI;
 import fr.uge.jee.springmvc.pokematch.api.PokeGQL;
-import fr.uge.jee.springmvc.pokematch.models.History;
-import fr.uge.jee.springmvc.pokematch.models.IHistory;
+import fr.uge.jee.springmvc.pokematch.history.History;
+import fr.uge.jee.springmvc.pokematch.history.IHistory;
 import fr.uge.jee.springmvc.pokematch.models.Pokedex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +16,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @PropertySource("classpath:pokematch.properties")
-@EnableCaching
 public class Config {
-    @Value("${pokematch.pokesize}")
+    @Value("${pokematch.pokeSize}")
     private int maxSize;
 
     @Bean
@@ -36,15 +33,9 @@ public class Config {
                         .maxInMemorySize(16 * 1024 * 1024)).build()).build();
     }
 
-    /*
     @Bean
     IPokeAPI pokeAPI(WebClient getWebClient) {
-        return new PokeAPI(getWebClient);
-    }
-    */
-
-    @Bean
-    IPokeAPI pokeGQL(WebClient getWebClient) {
+        //return new PokeAPI(getWebClient);
         return new PokeGQL(getWebClient);
     }
 

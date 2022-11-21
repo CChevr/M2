@@ -1,6 +1,5 @@
 package fr.uge.jee.hibernate.employees;
 
-import fr.uge.jee.hibernate.employees.models.Employee;
 import fr.uge.jee.hibernate.employees.repositories.EmployeeRepository;
 
 public class Application {

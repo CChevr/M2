@@ -1,4 +1,6 @@
-package fr.uge.jee.springmvc.pokematch.models;
+package fr.uge.jee.springmvc.pokematch.history;
+
+import fr.uge.jee.springmvc.pokematch.models.Pokemon;
 
 import java.util.List;
 import java.util.Map;
@@ -46,14 +48,18 @@ public class History implements IHistory {
         }
     }
 
-    private static int lastComporator(Map.Entry<String, Data> a, Map.Entry<String, Data> b) {
+    private static int lastComparator(Map.Entry<String, Data> a, Map.Entry<String, Data> b) {
         return b.getValue().getCount() - a.getValue().getCount();
     }
 
     public List<Pokemon> getLastPokemons(int size) {
+        if (size <= 0) {
+            return List.of();
+        }
+
         synchronized (history) {
             return history.entrySet().stream()
-                    .sorted(History::lastComporator)
+                    .sorted(History::lastComparator)
                     .map(x -> x.getValue().getPokemon())
                     .limit(size)
                     .collect(Collectors.toList());

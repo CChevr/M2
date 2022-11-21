@@ -134,7 +134,7 @@ public class EmployeeRepository {
 
     List<Employee> getAllByFirstName(String firstName) {
         Function<EntityManager, List<Employee>> function = (EntityManager em) -> {
-            var q = "SELECT e FROM Employee WHERE e.firstName = :firstName";
+            var q = "SELECT e FROM Employee e WHERE e.firstName = :firstName";
             return em.createQuery(q).getResultList();
         };
 

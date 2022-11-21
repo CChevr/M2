@@ -1,4 +1,6 @@
-package fr.uge.jee.springmvc.pokematch.models;
+package fr.uge.jee.springmvc.pokematch.history;
+
+import fr.uge.jee.springmvc.pokematch.models.Pokemon;
 
 import java.util.List;
 
