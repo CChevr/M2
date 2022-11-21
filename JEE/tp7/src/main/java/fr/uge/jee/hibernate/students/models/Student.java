@@ -7,11 +7,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Students")
-public class Student {
+public class Student implements WithId<Long> {
     @Id
     @GeneratedValue
     @Column(name = "studentid")
-    private long id;
+    private Long id;
     // agrégation
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "Address_Id")
@@ -35,7 +35,7 @@ public class Student {
         this.university = Objects.requireNonNull(university);
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

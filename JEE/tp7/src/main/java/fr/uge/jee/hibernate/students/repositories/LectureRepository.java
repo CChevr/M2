@@ -1,8 +1,10 @@
 package fr.uge.jee.hibernate.students.repositories;
 
 import fr.uge.jee.hibernate.students.models.Lecture;
+import fr.uge.jee.hibernate.students.models.Student;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -64,4 +66,17 @@ public class LectureRepository {
             return Optional.empty();
         }
     }
+
+    /*
+    public List<Student> getStudents(long id) {
+        Consumer<EntityManager> consumer = em -> {
+            var query = "SELECT s FROM Student s LEFT JOIN FETCH s.lecture WHERE s.lecture.id = :id";
+            return em.createQuery(query, Student.class)
+                    .setParameter("id", id)
+                    .getResultList();
+        };
+
+        return PersistenceUtils.inTransaction(consumer);
+    }
+     */
 }

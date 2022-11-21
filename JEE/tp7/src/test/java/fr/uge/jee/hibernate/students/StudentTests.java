@@ -207,7 +207,7 @@ public class StudentTests {
     @DisplayName("Add Lecture to studient")
     void AddLectureToStudent() {
         var idLecture = lectureRepository.create(getLecture1().getName());
-        var idStudent = studentRepository.create(getAddress1(), getUniversity1());
+        var idStudent = studentRepository.create(getStudent1());
 
         var lecture = lectureRepository.getLecture(idLecture);
         assertTrue(lecture.isPresent());
@@ -233,7 +233,7 @@ public class StudentTests {
     @Test
     @DisplayName("Add unkown lecture to a Student")
     void AddUnknownLectureToStudent() {
-        var idStudent = studentRepository.create(getAddress1(), getUniversity1());
+        var idStudent = studentRepository.create(getStudent1());
 
         assertThrows(NullPointerException.class, () -> studentRepository.addLecture(idStudent, null));
     }
@@ -247,16 +247,17 @@ public class StudentTests {
     @Test
     @DisplayName("Change Student Unversity")
     void ChangeStudentUniversity() {
-        var university1 = getUniversity1();
+        var s = getStudent1();
+        var university1 = s.getUniversity();
         var university2 = getUniversity2();
-        var idStudent = studentRepository.create(getAddress1(), university1);
-        var student = studentRepository.getStudent(idStudent);
+        var idStudent = studentRepository.create(s);
+        var student = studentRepository.get(idStudent);
 
         assertTrue(student.isPresent());
         assertEquals(university1.getName(), student.get().getUniversity().getName());
 
         assertTrue(studentRepository.setUniversity(idStudent, university2));
-        student = studentRepository.getStudent(idStudent);
+        student = studentRepository.get(idStudent);
         assertTrue(student.isPresent());
         assertEquals(university2.getName(), student.get().getUniversity().getName());
     }
@@ -264,15 +265,16 @@ public class StudentTests {
     @Test
     @DisplayName("Change Student to unknown university")
     void ChangeStudentUnknownUniversity() {
-        var university = getUniversity1();
-        var idStudent = studentRepository.create(getAddress1(), university);
-        var student = studentRepository.getStudent(idStudent);
+        var s = getStudent1();
+        var university = s.getUniversity();
+        var idStudent = studentRepository.create(s);
+        var student = studentRepository.get(idStudent);
 
         assertTrue(student.isPresent());
         assertEquals(university.getName(), student.get().getUniversity().getName());
 
         assertThrows(NullPointerException.class, () -> studentRepository.setUniversity(idStudent, null));
-        student = studentRepository.getStudent(idStudent);
+        student = studentRepository.get(idStudent);
         assertTrue(student.isPresent());
         assertEquals(university.getName(), student.get().getUniversity().getName());
     }
@@ -280,28 +282,32 @@ public class StudentTests {
     @Test
     @DisplayName("Change Student's same university")
     void ChangeStudentSameUniversity() {
-        var university = getUniversity1();
-        var idStudent = studentRepository.create(getAddress1(), university);
-        var student = studentRepository.getStudent(idStudent);
+        var s = getStudent1();
+        var university = s.getUniversity();
+        var idStudent = studentRepository.create(s);
+        var student = studentRepository.get(idStudent);
 
         assertTrue(student.isPresent());
         assertEquals(university.getName(), student.get().getUniversity().getName());
 
         assertTrue(studentRepository.setUniversity(idStudent, university));
-        student = studentRepository.getStudent(idStudent);
+        student = studentRepository.get(idStudent);
         assertTrue(student.isPresent());
         assertEquals(university.getName(), student.get().getUniversity().getName());
     }
 
     @Test
+    @DisplayName("Change student university")
     void exchangeStudentUniversity() {
-        var university1 = getUniversity1();
-        var university2 = getUniversity2();
-        var idStudent1 = studentRepository.create(getAddress1(), university1);
-        var idStudent2 = studentRepository.create(getAddress2(), university2);
+        var s1 = getStudent1();
+        var s2 = getStudent2();
+        var university1 = s1.getUniversity();
+        var university2 = s2.getUniversity();
+        var idStudent1 = studentRepository.create(s1);
+        var idStudent2 = studentRepository.create(s2);
 
-        var student1 = studentRepository.getStudent(idStudent1);
-        var student2 = studentRepository.getStudent(idStudent2);
+        var student1 = studentRepository.get(idStudent1);
+        var student2 = studentRepository.get(idStudent2);
         assertTrue(student1.isPresent());
         assertTrue(student2.isPresent());
         assertEquals(university1.getName(), student1.get().getUniversity().getName());
@@ -319,16 +325,17 @@ public class StudentTests {
     @Test
     @DisplayName("Change Student Address")
     void ChangeStudentAddress()  {
-        var address1 = getAddress1();
+        var s = getStudent1();
+        var address1 = s.getAddress();
         var address2 = getAddress2();
-        var idStudent = studentRepository.create(address1, getUniversity1());
-        var student = studentRepository.getStudent(idStudent);
+        var idStudent = studentRepository.create(s);
+        var student = studentRepository.get(idStudent);
 
         assertTrue(student.isPresent());
         assertEquals(address1.getCity(), student.get().getAddress().getCity());
 
         assertTrue(studentRepository.setAddress(idStudent, address2));
-        student = studentRepository.getStudent(idStudent);
+        student = studentRepository.get(idStudent);
         assertTrue(student.isPresent());
         assertEquals(address2.getCity(), student.get().getAddress().getCity());
     }
@@ -336,15 +343,16 @@ public class StudentTests {
     @Test
     @DisplayName("Change student unknown address")
     void changeStudentUnknownAddress() {
-        var address = getAddress1();
-        var idStudent = studentRepository.create(address, getUniversity1());
-        var student = studentRepository.getStudent(idStudent);
+        var s = getStudent1();
+        var address = s.getAddress();
+        var idStudent = studentRepository.create(s);
+        var student = studentRepository.get(idStudent);
 
         assertTrue(student.isPresent());
         assertEquals(address.getCity(), student.get().getAddress().getCity());
 
         assertThrows(NullPointerException.class, () -> studentRepository.setAddress(idStudent, null));
-        student = studentRepository.getStudent(idStudent);
+        student = studentRepository.get(idStudent);
         assertTrue(student.isPresent());
         assertEquals(address.getCity(), student.get().getAddress().getCity());
     }
@@ -352,15 +360,16 @@ public class StudentTests {
     @Test
     @DisplayName("Change student to same address")
     void changeStudentSameAddress() {
-        var address = getAddress1();
-        var idStudent = studentRepository.create(address, getUniversity1());
-        var student = studentRepository.getStudent(idStudent);
+        var s = getStudent1();
+        var address = s.getAddress();
+        var idStudent = studentRepository.create(s);
+        var student = studentRepository.get(idStudent);
 
         assertTrue(student.isPresent());
         assertEquals(address.getCity(), student.get().getAddress().getCity());
 
         assertTrue(studentRepository.setAddress(idStudent, address));
-        student = studentRepository.getStudent(idStudent);
+        student = studentRepository.get(idStudent);
         assertTrue(student.isPresent());
         assertEquals(address.getCity(), student.get().getAddress().getCity());
     }

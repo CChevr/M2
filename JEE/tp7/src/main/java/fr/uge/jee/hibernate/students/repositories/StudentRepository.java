@@ -9,21 +9,10 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class StudentRepository {
+public class StudentRepository implements Repository<Student, Long> {
     private final UniversityRepository universityRepository = new UniversityRepository();
 
-    public long create(Address address, University university) {
-        Objects.requireNonNull(address);
-        Objects.requireNonNull(university);
-
-        Function<EntityManager, Student> function = (EntityManager em) -> {
-            var student = new Student(address, university);
-            em.persist(student);
-            return student;
-        };
-
-        return PersistenceUtils.inTransaction(function).getId();
-    }
+    public Class<Student> getClazz() { return Student.class; }
 
     /**
      * Add a lecture to a student
@@ -47,27 +36,6 @@ public class StudentRepository {
             return true;
         } catch(Exception e) {
             return false;
-        }
-    }
-
-    /**
-     * Return the student
-     * @param id student's id
-     * @return the corresponding student
-     */
-    public Optional<Student> getStudent(long id) {
-        Function<EntityManager, Student> function = em -> {
-            var student = em.find(Student.class, id);
-            if (null == student) {
-                throw new IllegalArgumentException("wrong id");
-            }
-            return student;
-        };
-
-        try {
-            return Optional.of(PersistenceUtils.inTransaction(function));
-        } catch(Exception e) {
-            return Optional.empty();
         }
     }
 
@@ -135,7 +103,6 @@ public class StudentRepository {
                 throw new IllegalArgumentException("wrong id");
             }
 
-            // TODO faire attention si transient ou detached
             student.setUniversity(em.merge(university));
         };
 
@@ -166,7 +133,7 @@ public class StudentRepository {
                 throw new IllegalArgumentException("wrong id");
             }
 
-            student.setAddress(address);
+            student.setAddress(em.merge(address));
         };
 
         try {
