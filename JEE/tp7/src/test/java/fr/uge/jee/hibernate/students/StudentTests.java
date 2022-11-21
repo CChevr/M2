@@ -231,7 +231,7 @@ public class StudentTests {
     }
 
     @Test
-    @DisplayName("Add unkown lecture to a Student")
+    @DisplayName("Add unknown lecture to a Student")
     void AddUnknownLectureToStudent() {
         var idStudent = studentRepository.create(getStudent1());
 
@@ -239,13 +239,13 @@ public class StudentTests {
     }
 
     @Test
-    @DisplayName("Add unkown lecture to an unknown student")
-    void AddUnkownLectureToUnkownStudent() {
+    @DisplayName("Add unknown lecture to an unknown student")
+    void AddUnknownLectureToUnknownStudent() {
         assertThrows(NullPointerException.class, () -> studentRepository.addLecture(-1, null));
     }
 
     @Test
-    @DisplayName("Change Student Unversity")
+    @DisplayName("Change Student University")
     void ChangeStudentUniversity() {
         var s = getStudent1();
         var university1 = s.getUniversity();
