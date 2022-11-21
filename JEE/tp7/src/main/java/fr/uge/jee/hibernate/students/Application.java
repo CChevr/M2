@@ -16,6 +16,7 @@ public class Application {
 
     public static void main(String[] args) {
         // Creation deletion universities
+        /*
         var universityRepository = new UniversityRepository();
         var upem = universityRepository.create("UPEM");
         var uge = universityRepository.create("Gustave Eiffel");
@@ -26,5 +27,6 @@ public class Application {
         var francais = lectureRepository.create("Français");
         var math = lectureRepository.create("Mathématiques");
         testCommand(() -> lectureRepository.delete(francais), "français");
+        */
     }
 }

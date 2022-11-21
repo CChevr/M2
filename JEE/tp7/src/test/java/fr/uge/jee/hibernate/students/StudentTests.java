@@ -118,7 +118,7 @@ public class StudentTests {
     @DisplayName("University DB registration")
     void UniversityDBRegistration() {
         var em = emf.createEntityManager();
-        assertDoesNotThrow(() -> universityRepository.create("UGE"));
+        assertDoesNotThrow(() -> universityRepository.create(getUniversity1()));
 
         var countQuerry = "SELECT count(u) FROM University u";
         var count = em.createQuery(countQuerry).getResultList();
@@ -128,7 +128,7 @@ public class StudentTests {
     @Test
     @DisplayName("University DB Registration without name")
     void UniversityDBRegistrationWithoutName() {
-        assertThrows(NullPointerException.class, () -> universityRepository.create((String) null));
+        assertThrows(IllegalArgumentException.class, () -> universityRepository.create(null));
 
         var em = emf.createEntityManager();
         var countQuerry = "SELECT count(u) FROM University u";
@@ -140,7 +140,7 @@ public class StudentTests {
     @DisplayName("University DB deletion")
     void UniversityDBDeletion() {
         var em = emf.createEntityManager();
-        var id = universityRepository.create("UPEM");
+        var id = universityRepository.create(getUniversity1());
 
         var countQuerry = "SELECT count(u) FROM University u";
         var count = em.createQuery(countQuerry).getResultList();
@@ -256,7 +256,8 @@ public class StudentTests {
         assertTrue(student.isPresent());
         assertEquals(university1.getName(), student.get().getUniversity().getName());
 
-        assertTrue(studentRepository.setUniversity(idStudent, university2));
+        var idUniv2 = universityRepository.create(university2);
+        assertTrue(studentRepository.setUniversity(idStudent, idUniv2));
         student = studentRepository.get(idStudent);
         assertTrue(student.isPresent());
         assertEquals(university2.getName(), student.get().getUniversity().getName());
@@ -290,7 +291,7 @@ public class StudentTests {
         assertTrue(student.isPresent());
         assertEquals(university.getName(), student.get().getUniversity().getName());
 
-        assertTrue(studentRepository.setUniversity(idStudent, university));
+        assertTrue(studentRepository.setUniversity(idStudent, university.getId()));
         student = studentRepository.get(idStudent);
         assertTrue(student.isPresent());
         assertEquals(university.getName(), student.get().getUniversity().getName());
@@ -313,13 +314,14 @@ public class StudentTests {
         assertEquals(university1.getName(), student1.get().getUniversity().getName());
         assertEquals(university2.getName(), student2.get().getUniversity().getName());
 
-        assertTrue(studentRepository.setUniversity(idStudent1, university2));
+        assertTrue(studentRepository.setUniversity(idStudent1, university2.getId()));
     }
 
     @Test
     @DisplayName("Change unknown student university")
     void ChangeUnknownStudentUniversity() {
-        assertFalse(studentRepository.setUniversity(-1L, getUniversity1()));
+        var idUniv = universityRepository.create(getUniversity1());
+        assertFalse(studentRepository.setUniversity(-1L, idUniv));
     }
 
     @Test

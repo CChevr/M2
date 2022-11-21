@@ -90,20 +90,26 @@ public class StudentRepository implements Repository<Student, Long> {
      * @param university new university
      * @return true in case of successful change, false else-way
      */
-    public boolean setUniversity(long id, University university) {
-        Objects.requireNonNull(university);
+    public boolean setUniversity(Long idStudent, Long idUniv) {
+        Objects.requireNonNull(idStudent);
+        Objects.requireNonNull(idUniv);
 
         Consumer<EntityManager> consumer = em -> {
-            var query = "SELECT s FROM Student s LEFT JOIN FETCH s.university WHERE s.id = :id";
+            var query = "SELECT s FROM Student s WHERE s.id = :id";
             var student = em.createQuery(query, Student.class)
-                    .setParameter("id", id)
+                    .setParameter("id", idStudent)
                     .getSingleResult();
 
-            if (null == student) {
+            query = "SELECT u FROM University u WHERE u.id = :id";
+            var univ = em.createQuery(query, University.class)
+                    .setParameter("id", idUniv)
+                    .getSingleResult();
+
+            if (null == student || null == univ) {
                 throw new IllegalArgumentException("wrong id");
             }
 
-            student.setUniversity(em.merge(university));
+            student.setUniversity(univ);
         };
 
         try {

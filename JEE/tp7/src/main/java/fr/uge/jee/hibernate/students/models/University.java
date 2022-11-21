@@ -5,11 +5,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Universities")
-public class University {
+public class University implements WithId<Long> {
     @Id
     @GeneratedValue
     @Column(name = "universityid")
-    private long id;
+    private Long id;
     private String name;
 
     public University() {}
@@ -18,7 +18,7 @@ public class University {
         this.name = Objects.requireNonNull(name);
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -26,7 +26,7 @@ public class University {
         return name;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
