@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Optional;
 
 public class CacheManager {
     JedisPool pool;
@@ -15,7 +16,24 @@ public class CacheManager {
     private final double sizeMax = 10;        // 1000
     private double serial;
     private final String hkey = "history";
-    private final String ckey = "cache";
+    private final String ckey = "drug: ";
+
+    private class Drug {
+        private final int cip7;
+        private final int cis;
+        //private final String denom;
+
+        Drug(int cip7, int cis) {
+            this.cip7 = cip7;
+            this.cis = cis;
+            //this.denom =  denom;
+        }
+
+        @Override
+        public String toString() {
+            return "cip7 : "+cip7+"  cis : "+cis;
+        }
+    }
 
     private CacheManager(JedisPool pool, Connection connection) {
         this.pool = pool;
@@ -30,27 +48,59 @@ public class CacheManager {
         return serial;
     }
 
-    private boolean updateHistory(Jedis resources, String member) {
-        resources.zadd(hkey, Map.of(member, getNext()));
+    private void updateHistory(Jedis resources, int cip7) {
+        resources.zadd(hkey, Map.of(String.valueOf(cip7), getNext()));
 
-        if (sizeMax < resources.zcount(hkey, 0d, getCurrent())) {
+        if (sizeMax < resources.zcount(hkey, 0d, getCurrent()))
             resources.zpopmin(hkey);
-            return false;
-        }
-
-        return true;
     }
 
-    public void get(String member) {
+    private boolean isInCache(Jedis ressources, int cip7) {
+        return (null == ressources.zscore(hkey, String.valueOf(cip7)));
+    }
+
+    private Optional<Drug> getDrugSQL(int cip7) throws SQLException {
+        var res = connection.prepareStatement("SELECT cis, denom FROM bdpm_cis WHERE cis = "+cip7).executeQuery();
+
+        if (res.next()) {
+            return Optional.of(new Drug(cip7, res.getInt("cis")));
+        }
+
+        return Optional.empty();
+    }
+
+    private void storeDrugRedis(Drug drug) {
         var resources = pool.getResource();
+        resources.hset(ckey+drug.cip7, Map.of("cis", String.valueOf(drug.cis)));
+        updateHistory(resources, drug.cip7);
+    }
 
-        var present = updateHistory(resources, member);
+    private Optional<Drug> getDrugRedis(int cip7) {
+        var resources = pool.getResource();
+        var cis = resources.hget(ckey+cip7, "cis");
+        //var denom = resources.hget(ckey+cip7, "denom");
 
-        if(!present) {
-            // -> requete
-            // -> store
+        if (null == cis)
+            return Optional.empty();
+
+        try {
+            var drug =  Optional.of(new Drug(cip7, Integer.parseInt(cis)));
+            updateHistory(resources, cip7);
+            return drug;
+        } catch(Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Drug> get(int cip7) throws SQLException {
+        var resource = pool.getResource();
+
+        if(!isInCache(resource, cip7)) {
+            var drug = getDrugSQL(cip7);
+            drug.ifPresent(this::storeDrugRedis);
+            return drug;
         } else {
-            // -> cache
+            return getDrugRedis(cip7);
         }
     }
 
@@ -72,5 +122,6 @@ public class CacheManager {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         var cacheManager = getCacheManager();
+        cacheManager.get(61266250);
     }
 }
