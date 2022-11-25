@@ -55,8 +55,10 @@ public class CacheManager {
             resources.zpopmin(hkey);
     }
 
-    private boolean isInCache(Jedis ressources, int cip7) {
-        return (null == ressources.zscore(hkey, String.valueOf(cip7)));
+    private boolean isInCache(int cip7) {
+        try(var resource = pool.getResource()) {
+            return (null == resource.zscore(hkey, String.valueOf(cip7)));
+        }
     }
 
     private Optional<Drug> getDrugSQL(int cip7) throws SQLException {
@@ -70,32 +72,32 @@ public class CacheManager {
     }
 
     private void storeDrugRedis(Drug drug) {
-        var resources = pool.getResource();
-        resources.hset(ckey+drug.cip7, Map.of("cis", String.valueOf(drug.cis)));
-        updateHistory(resources, drug.cip7);
+        try(var resource = pool.getResource()) {
+            resource.hset(ckey + drug.cip7, Map.of("cis", String.valueOf(drug.cis)));
+            updateHistory(resource, drug.cip7);
+        }
     }
 
     private Optional<Drug> getDrugRedis(int cip7) {
-        var resources = pool.getResource();
-        var cis = resources.hget(ckey+cip7, "cis");
-        //var denom = resources.hget(ckey+cip7, "denom");
+        try(var resource = pool.getResource()) {
+            var cis = resource.hget(ckey + cip7, "cis");
+            //var denom = resources.hget(ckey+cip7, "denom");
 
-        if (null == cis)
-            return Optional.empty();
+            if (null == cis)
+                return Optional.empty();
 
-        try {
-            var drug =  Optional.of(new Drug(cip7, Integer.parseInt(cis)));
-            updateHistory(resources, cip7);
-            return drug;
-        } catch(Exception e) {
-            return Optional.empty();
+            try {
+                var drug = Optional.of(new Drug(cip7, Integer.parseInt(cis)));
+                updateHistory(resource, cip7);
+                return drug;
+            } catch (Exception e) {
+                return Optional.empty();
+            }
         }
     }
 
     public Optional<Drug> get(int cip7) throws SQLException {
-        var resource = pool.getResource();
-
-        if(!isInCache(resource, cip7)) {
+        if (!isInCache(cip7)) {
             var drug = getDrugSQL(cip7);
             drug.ifPresent(this::storeDrugRedis);
             return drug;
