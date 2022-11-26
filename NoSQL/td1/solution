@@ -1,0 +1,251 @@
+CREATE TABLE bdpm_cis (
+    cis integer NOT NULL,
+    denom character varying(255),
+    forme character varying(255),
+    voie character varying(255),
+    statadm character varying(100),
+    typproc character varying(255),
+    etacom character varying(100),
+    datamm date,
+    labotit character varying(255)
+);
+
+ 
+
+CREATE TABLE bdpm_ciscip2 (
+    cip7 integer NOT NULL,
+    cip13 bigint,
+    cis integer,
+    prese character varying(255),
+    statadm character varying(100),
+    etacom character varying(100),
+    datedecl date,
+    agrcol character(3),
+    prixe double precision,
+    liste integer,
+    taux integer,
+    fprixe double precision,
+    disp double precision
+);
+
+CREATE TABLE denorm_ciscip (
+    cip7 integer NOT NULL,
+    cip13 bigint,
+    cis integer,
+    prese character varying(255),
+    statadm character varying(100),
+    etacom character varying(100),
+    datedecl date,
+    agrcol character(3),
+    prixe double precision,
+    liste integer,
+    taux integer,
+    fprixe double precision,
+    disp double precision
+);
+\cd /home/oliv/cours/Courses/NoSQL_course/tpDenorm/
+\i cis.sql
+\i ciscip.sql
+alter table denorm_ciscip add column denom character varying(255);
+insert into denorm_ciscip select * from bdpm_ciscip2 ;
+update denorm_ciscip set denom=c.denom from bdpm_cis c where denorm_ciscip.cis=c.cis;
+
+denorm=# explain analyze select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis;
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=765.16..1799.09 rows=20797 width=63) (actual time=11.193..25.276 rows=20790 loops=1)
+   Hash Cond: (cc.cis = c.cis)
+   ->  Seq Scan on bdpm_ciscip2 cc  (cost=0.00..747.97 rows=20797 width=8) (actual time=0.014..3.989 rows=20797 loops=1)
+   ->  Hash  (cost=568.96..568.96 rows=15696 width=59) (actual time=11.146..11.147 rows=15696 loops=1)
+         Buckets: 16384  Batches: 1  Memory Usage: 1550kB
+         ->  Seq Scan on bdpm_cis c  (cost=0.00..568.96 rows=15696 width=59) (actual time=0.010..4.801 rows=15696 loops=1)
+ Planning Time: 0.163 ms
+ Execution Time: 26.578 ms
+(8 rows)
+
+explain analyze select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis where cip7>=3000000 and cip7<=3999999;
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=765.16..1811.94 rows=14169 width=63) (actual time=9.888..19.205 rows=14347 loops=1)
+   Hash Cond: (cc.cis = c.cis)
+   ->  Seq Scan on bdpm_ciscip2 cc  (cost=0.00..851.95 rows=14169 width=8) (actual time=0.014..3.996 rows=14351 loops=1)
+         Filter: ((cip7 >= 3000000) AND (cip7 <= 3999999))
+         Rows Removed by Filter: 6446
+   ->  Hash  (cost=568.96..568.96 rows=15696 width=59) (actual time=9.856..9.857 rows=15696 loops=1)
+         Buckets: 16384  Batches: 1  Memory Usage: 1550kB
+         ->  Seq Scan on bdpm_cis c  (cost=0.00..568.96 rows=15696 width=59) (actual time=0.006..4.151 rows=15696 loops=1)
+ Planning Time: 0.154 ms
+ Execution Time: 19.960 ms
+(10 rows)
+
+explain analyze select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis where cip7<3000000;
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=765.16..1599.42 rows=2494 width=63) (actual time=10.301..15.658 rows=2474 loops=1)
+   Hash Cond: (cc.cis = c.cis)
+   ->  Seq Scan on bdpm_ciscip2 cc  (cost=0.00..799.96 rows=2494 width=8) (actual time=0.015..4.098 rows=2476 loops=1)
+         Filter: (cip7 < 3000000)
+         Rows Removed by Filter: 18321
+   ->  Hash  (cost=568.96..568.96 rows=15696 width=59) (actual time=10.265..10.266 rows=15696 loops=1)
+         Buckets: 16384  Batches: 1  Memory Usage: 1550kB
+         ->  Seq Scan on bdpm_cis c  (cost=0.00..568.96 rows=15696 width=59) (actual time=0.005..4.315 rows=15696 loops=1)
+ Planning Time: 0.142 ms
+ Execution Time: 15.942 ms
+(10 rows)
+
+denorm=# explain analyze select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis where cip7=3000064;
+                                                    QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=799.98..1427.81 rows=1 width=63) (actual time=4.030..9.838 rows=1 loops=1)
+   Hash Cond: (c.cis = cc.cis)
+   ->  Seq Scan on bdpm_cis c  (cost=0.00..568.96 rows=15696 width=59) (actual time=0.011..3.056 rows=15696 loops=1)
+   ->  Hash  (cost=799.96..799.96 rows=1 width=8) (actual time=3.993..3.994 rows=1 loops=1)
+         Buckets: 1024  Batches: 1  Memory Usage: 9kB
+         ->  Seq Scan on bdpm_ciscip2 cc  (cost=0.00..799.96 rows=1 width=8) (actual time=1.169..3.989 rows=1 loops=1)
+               Filter: (cip7 = 3000064)
+               Rows Removed by Filter: 20796
+ Planning Time: 0.142 ms
+ Execution Time: 9.873 ms
+(10 rows)
+
+alter table bdpm_cis add constraint cis_pk primary key (cis);
+alter table bdpm_ciscip2 add constraint ciscip_pk primary key (cip7);
+alter table denorm_ciscip add constraint denorm_pk primary key (cip7);
+
+testoliv=# explain analyze select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis;
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=765.16..1567.73 rows=20797 width=63) (actual time=10.162..24.496 rows=20790 loops=1)
+   Hash Cond: (cc.cis = c.cis)
+   ->  Seq Scan on bdpm_ciscip2 cc  (cost=0.00..747.97 rows=20797 width=8) (actual time=0.009..4.059 rows=20797 loops=1)
+   ->  Hash  (cost=568.96..568.96 rows=15696 width=59) (actual time=10.133..10.134 rows=15696 loops=1)
+         Buckets: 16384  Batches: 1  Memory Usage: 1550kB
+         ->  Seq Scan on bdpm_cis c  (cost=0.00..568.96 rows=15696 width=59) (actual time=0.008..4.305 rows=15696 loops=1)
+ Planning Time: 0.502 ms
+ Execution Time: 25.902 ms
+(8 rows)
+
+testoliv=# explain analyze select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis where cip7>=3000000 and cip7<=3999999;
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=765.16..1654.32 rows=14169 width=63) (actual time=9.254..19.299 rows=14347 loops=1)
+   Hash Cond: (cc.cis = c.cis)
+   ->  Seq Scan on bdpm_ciscip2 cc  (cost=0.00..851.95 rows=14169 width=8) (actual time=0.013..4.457 rows=14351 loops=1)
+         Filter: ((cip7 >= 3000000) AND (cip7 <= 3999999))
+         Rows Removed by Filter: 6446
+   ->  Hash  (cost=568.96..568.96 rows=15696 width=59) (actual time=9.222..9.223 rows=15696 loops=1)
+         Buckets: 16384  Batches: 1  Memory Usage: 1550kB
+         ->  Seq Scan on bdpm_cis c  (cost=0.00..568.96 rows=15696 width=59) (actual time=0.005..4.217 rows=15696 loops=1)
+ Planning Time: 0.309 ms
+ Execution Time: 20.056 ms
+(10 rows)
+
+testoliv=# explain analyze select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis where cip7<3000000;
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=816.78..1394.50 rows=2494 width=63) (actual time=10.579..13.677 rows=2474 loops=1)
+   Hash Cond: (cc.cis = c.cis)
+   ->  Bitmap Heap Scan on bdpm_ciscip2 cc  (cost=51.62..622.79 rows=2494 width=8) (actual time=0.633..2.269 rows=2476 loops=1)
+         Recheck Cond: (cip7 < 3000000)
+         Heap Blocks: exact=519
+         ->  Bitmap Index Scan on ciscip_pk  (cost=0.00..50.99 rows=2494 width=0) (actual time=0.491..0.492 rows=2476 loops=1)
+               Index Cond: (cip7 < 3000000)
+   ->  Hash  (cost=568.96..568.96 rows=15696 width=59) (actual time=9.914..9.916 rows=15696 loops=1)
+         Buckets: 16384  Batches: 1  Memory Usage: 1550kB
+         ->  Seq Scan on bdpm_cis c  (cost=0.00..568.96 rows=15696 width=59) (actual time=0.013..4.683 rows=15696 loops=1)
+ Planning Time: 0.356 ms
+ Execution Time: 13.905 ms
+(12 rows)
+
+testoliv=# explain analyze select cip7, cis, denom from denorm_ciscip where cip7=3000064;
+                                                        QUERY PLAN                                                        
+--------------------------------------------------------------------------------------------------------------------------
+ Index Scan using denorm_pk on denorm_ciscip  (cost=0.29..8.30 rows=1 width=60) (actual time=0.038..0.039 rows=1 loops=1)
+   Index Cond: (cip7 = 3000064)
+ Planning Time: 0.335 ms
+ Execution Time: 0.073 ms
+(4 rows)
+
+Hot run (time in ms)
+selection		no denorm/no index	no denorm/index		denorm/no index		denorm/index
+1 records			10.1				0.071				4.4					0.05
+2494 records		16.8				13.7				6.4					3.4
+
+The most efficient solution is denormalization + indexing
+
+======================== Views
+create materialized view matcc as select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis;
+create view cc as select cip7, cc.cis, denom from bdpm_cis c join bdpm_ciscip2 cc on cc.cis=c.cis;
+
+denorm3=# explain analyze select cip7, cis, denom from matcc where cip7<3000000;
+                                               QUERY PLAN                                                
+---------------------------------------------------------------------------------------------------------
+ Seq Scan on matcc  (cost=0.00..276.12 rows=1097 width=524) (actual time=0.023..4.637 rows=2474 loops=1)
+   Filter: (cip7 < 3000000)
+   Rows Removed by Filter: 18316
+ Planning Time: 0.136 ms
+ Execution Time: 4.845 ms
+(5 rows)
+
+denorm3=# explain analyze select cip7, cis, denom from cc where cip7<3000000;
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=816.78..1394.50 rows=2494 width=63) (actual time=12.098..15.346 rows=2474 loops=1)
+   Hash Cond: (cc.cis = c.cis)
+   ->  Bitmap Heap Scan on bdpm_ciscip2 cc  (cost=51.62..622.79 rows=2494 width=8) (actual time=0.512..2.268 rows=2476 loops=1)
+         Recheck Cond: (cip7 < 3000000)
+         Heap Blocks: exact=519
+         ->  Bitmap Index Scan on ciscip_pk  (cost=0.00..50.99 rows=2494 width=0) (actual time=0.366..0.367 rows=2476 loops=1)
+               Index Cond: (cip7 < 3000000)
+   ->  Hash  (cost=568.96..568.96 rows=15696 width=59) (actual time=11.434..11.435 rows=15696 loops=1)
+         Buckets: 16384  Batches: 1  Memory Usage: 1550kB
+         ->  Seq Scan on bdpm_cis c  (cost=0.00..568.96 rows=15696 width=59) (actual time=0.012..4.918 rows=15696 loops=1)
+ Planning Time: 0.320 ms
+ Execution Time: 15.977 ms
+(12 rows)
+
+denorm3=# explain analyze select cip7, cis, denom from matcc where cip7=3000064;
+                                            QUERY PLAN                                            
+--------------------------------------------------------------------------------------------------
+ Seq Scan on matcc  (cost=0.00..494.88 rows=1 width=60) (actual time=1.003..3.393 rows=1 loops=1)
+   Filter: (cip7 = 3000064)
+   Rows Removed by Filter: 20789
+ Planning Time: 0.072 ms
+ Execution Time: 3.415 ms
+(5 rows)
+
+denorm3=# create index matcc_cip7 on matcc (cip7);
+CREATE INDEX
+denorm3=# \d matcc
+                 Materialized view "public.matcc"
+ Column |          Type          | Collation | Nullable | Default 
+--------+------------------------+-----------+----------+---------
+ cip7   | integer                |           |          | 
+ cis    | integer                |           |          | 
+ denom  | character varying(255) |           |          | 
+Indexes:
+    "matcc_cip7" btree (cip7)
+
+denorm3=# explain analyze select cip7, cis, denom from matcc where cip7=3000064;
+                                                    QUERY PLAN                                                     
+-------------------------------------------------------------------------------------------------------------------
+ Index Scan using matcc_cip7 on matcc  (cost=0.29..8.30 rows=1 width=60) (actual time=0.040..0.042 rows=1 loops=1)
+   Index Cond: (cip7 = 3000064)
+ Planning Time: 0.271 ms
+ Execution Time: 0.063 ms
+(4 rows)
+
+denorm3=# explain analyze select cip7, cis, denom from cc where cip7=3000064;
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.57..16.61 rows=1 width=63) (actual time=0.028..0.031 rows=1 loops=1)
+   ->  Index Scan using ciscip_pk on bdpm_ciscip2 cc  (cost=0.29..8.30 rows=1 width=8) (actual time=0.013..0.016 rows=1 loops=1)
+         Index Cond: (cip7 = 3000064)
+   ->  Index Scan using cis_pk on bdpm_cis c  (cost=0.29..8.30 rows=1 width=59) (actual time=0.008..0.008 rows=1 loops=1)
+         Index Cond: (cis = cc.cis)
+ Planning Time: 0.354 ms
+ Execution Time: 0.069 ms
+(7 rows)
+
+No indexes on standard views, Most efficient is materialized with indexes
+
