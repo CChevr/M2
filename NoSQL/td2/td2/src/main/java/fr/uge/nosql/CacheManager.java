@@ -1,6 +1,5 @@
 package fr.uge.nosql;
 
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -14,7 +13,6 @@ public class CacheManager {
     JedisPool pool;
     Connection connection;
     private final double sizeMax = 3;        // 1000
-    private double serial;
     private final String hkey = "history";
     private final String ckey = "drug: ";
 
