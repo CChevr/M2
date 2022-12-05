@@ -17,6 +17,7 @@ public class Application {
         try (MongoClient mongoClient = MongoClients.create()) {
             MongoDatabase database = mongoClient.getDatabase("mymoviedb");
             try {
+                var document = database.getCollection("films").find().first();
                 Bson command = new BsonDocument("ping", new BsonInt64(1));
                 Document commandResult = database.runCommand(command);
                 System.out.println("Connected successfully to server.");
