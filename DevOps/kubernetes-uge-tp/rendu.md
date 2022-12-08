@@ -211,10 +211,41 @@ Se connecter à un pod : `kubectl exec -ti mynginxapp-5d9b94449d-lw4jw bash`
 
 `rm index.html`
 
-`echo "Je ne sais pas quoi ecrire, mais je l'écris...." > index.html`
+`echo "Je ne sais pas quoi ecrire, mterais je l'écris...." > index.html`
 
 `exit`
 
 `minikube service mynginxapp --url`
 
 La page a bien été modifiée
+
+## Cleanning 
+Vous pouvez maintenant nettoyer les ressources que vous avez créées dans votre cluster :
+
+`kubectl delete service my-app-js`
+
+`kubectl delete deployment my-app-js`
+
+Si nécessaire, arrêtez la machine virtuelle Minikube (VM) :
+
+`minikube stop`
+
+Si nécessaire, effacez la VM Minikube :
+
+`minikube delete`
+
+## Conclusion
+
+Qu'avez vous pensez du TP ?
+Ce TP à été pour moi une très bonne occasion de manipuler pour la première fois kubernetes et d'approfondir mes connaissances dessus.
+J'ai beaucoup aimer faire un tour général des fonctionnalités offertes par cet outil, et de comprendre en quoi il est un atout pour la gestion d'applications sur des serveurs.
+
+Comprennez vous mieux K8S ?
+Oui
+
+## Pour aller plus loin :
+- Un ancien collègue d'Orange (Olivier Beyler) à mis en place un cours / Formation K8S très complète...
+https://obeyler.github.io/Formation-K8S/
+
+- Aurelie Vache sur Youtube pour comprendre simplement les concepts :
+    Understanding Kubernetes in a visual way : https://www.youtube.com/c/AurelieVache/videos
