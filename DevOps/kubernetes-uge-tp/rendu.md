@@ -7,31 +7,30 @@ Un pods est un environnement d'exécution d'un ou de plusieurs conteneurs Docker
 
 Qu'est ce qu'un node ?
 Un node est un noeud esclave. Ce sont des machines hébergeant les conteneurs docker.
-Il répond aux ordres d'un master.
+Ils répondent aux ordres d'un master.
 
 A quoi sert K8S ?
-Kubernetes permet d'orchestrer la création, la scalabilité et le management des conteneurs. Il peut multiplier ou diminuer le nombre de copies d'un conteneur en fonction des besoins. 
+Kubernetes permet d'orchestrer la création, la mise à l'échelle et le management des conteneurs. Il peut multiplier ou diminuer le nombre de copies d'un conteneur en fonction des besoins. 
 
 
 Le développeur s'occupe t'il toujours de l'infrastructure?
 Kubernetes gère également l'infrastructure, le développeur ne s'en occupe donc pas.
 
 Qu'est-ce qu'un KUBELET?
-Le kublet recueilles des informations sur le node, et les renvoie au master à des fins de monitoring.
-Il indique ainsi les ressources utilisées, et disponnibles, ou bien encore si le noeud ne fonctionne plus correctement.
+Le kublet recueille des informations sur le node, et les renvoie au master à des fins de monitoring.
+Il indique ainsi les ressources utilisées, les ressources disponibles, ou bien si le noeud ne fonctionne plus correctement.
 
 Qu'est ce qu'un "Service" dans K8S?
-Un service est un point d'entrée permettant un accès à lot load balancé de conteneur identiques. 
-Une adresse IP est fourni à un service, et va équilibrer la charge de services entre els différents pods.
+Un service gère un ensemble de de conteneurs identique. Il à la charge d'en garantir la mise à l'échelle. Il possède une adresse IP et sert de point d'entrée pour communiquer avec les conteneurs qu'il gère.
 
 Qu'est ce que EKS? et SWARM?
 EKS pour Elastic Kubernetes Service est le service Kubernetes proposé par Amazon sur son cloud AWS.
-Swarm est quant à lui l'orchestrateur maison de Docker. Il est ainsi en concurence avec Kubernetes mais n'est pas imposé.
+Swarm est quant à lui l'orchestrateur maison de Docker. Il est ainsi en concurrence avec Kubernetes mais n'est pas imposé.
 
 ## 2. Cluster Minikube
 Qu'est ce que Minikube?
 
-Minikube est un kubernetes local permettant de s'entrainer à manipuler kubernetes
+Minikube est un kubernetes local. Il nous permet par exemple de nous entraîner à le manipuler et de tester des choses.
 
 ## 3. Un déploiement K8S
 ### Deployement
@@ -130,7 +129,7 @@ Que se passe'il ? Quel est le message affiché?
 
 L'exécution de la commande à ouvert une page web sur le service.
 Cette commande permet de nous afficher l'url de connexion de nos services
-On y retrouve le message de notre fichier contenu dans el docket:
+On y retrouve le message de notre fichier contenu dans le docker:
 `Bien joué ! Tu as fais ton premier DockerFile :)`
 
 ## 5. Les extensions
