@@ -4,8 +4,10 @@ import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import fr.uge.tp2.models.Drug;
 import fr.uge.tp2.models.Pharmacy;
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -109,13 +111,39 @@ public class Producer {
             return false;
 
         var record = new ProducerRecord<String, String>(topic, prescription);
-        kafkaProducer.send(record);
+        kafkaProducer.send(record, new ExempleCallback());
         return true;
+    }
+
+    public boolean publishRandomPrescriptions(int nbMessages, int delay, String topic) throws SQLException, ClassNotFoundException, InterruptedException {
+        if (0 > nbMessages)
+            throw new IllegalArgumentException("nbMessage have to be positive ("+nbMessages+")");
+
+        if (0 > delay)
+            throw new IllegalArgumentException("Delay have to be positive ("+delay+")");
+
+        for (var i = 0; i < nbMessages; i++) {
+            if(!publishRandomPrescription(topic))
+                return false;
+            Thread.sleep(delay);
+        }
+
+        return true;
+    }
+
+    private class ExempleCallback implements Callback {
+        @Override
+        public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+            if (e != null) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         var producer = new Producer();
+        var topic = "tpdrugs";
 
-        System.out.println(producer.getRandomPrescription());
+        System.out.println(producer.publishRandomPrescription(topic));
     }
 }

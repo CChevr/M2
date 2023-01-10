@@ -23,6 +23,6 @@ public class Utils {
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
-        return new KafkaProducer<String, String>(properties);
+        return new KafkaProducer<>(properties);
     }
 }
