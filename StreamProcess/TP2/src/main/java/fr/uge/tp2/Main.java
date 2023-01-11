@@ -1,25 +1,27 @@
 package fr.uge.tp2;
 
-import com.github.javafaker.Faker;
-import com.github.javafaker.Name;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import static fr.uge.tp2.Utils.connectPostgres;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
 
-    private static void main(String[] args) throws SQLException, ClassNotFoundException {
-        var url = "localhost:5432";
-        var db = "postgres";
-        var user = "postgres";
-        var password = "motdepasse";
+    public static void main(String[] args) throws InterruptedException {
+        var topic = "tpdrugs";
+        var producer = new Producer();
+        var consumer = new Consumer();
 
-        try (var c = connectPostgres(url, db, user, password)) {
-            System.out.println("Hello World!");
-        } catch (Exception e) {
-            System.out.println("Error "+e);
-        }
+        //ExecutorService executor = Executors.newFixedThreadPool(2);
+
+
+        var producerThread = new Thread(() -> producer.publishRandomPrescriptions(10, 200, topic));
+        var consumerThread = new Thread(() -> consumer.read(List.of(topic)));
+
+        producerThread.start();
+        consumerThread.start();
+
+        producerThread.join();
+        Thread.sleep(2000);
+        consumerThread.interrupt();
     }
 }
