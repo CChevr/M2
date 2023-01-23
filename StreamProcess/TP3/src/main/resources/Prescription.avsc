@@ -1,0 +1,11 @@
+{
+    "type": "record",
+    "name": "Prescription",
+    "fields" : [
+        {"name":"prenom", "type":"string"},
+        {"name":"nom", "type":"string"},
+        {"name":"cip", "type":"int"},
+        {"name":"prix", "type":"double"},
+        {"name":"idPharma", "type":"int"},
+    ]
+}
