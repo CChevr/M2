@@ -19,7 +19,7 @@ public class Utils {
         return c;
     }
 
-    public static KafkaProducer<String, String> connectKafkaProducer() {
+    public static KafkaProducer<String, byte[]> connectKafkaProducer() {
         Properties properties = new Properties();
 
         properties.put("bootstrap.servers", "localhost:9092");

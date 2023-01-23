@@ -4,14 +4,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
+import com.twitter.bijection.Bijection;
 import fr.uge.tp3.models.Drug;
 import fr.uge.tp3.models.Pharmacy;
 import fr.uge.tp3.models.Prescription;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
+import java.io.File;
 import java.sql.Connection;
 import java.util.Optional;
 import java.util.Random;
@@ -22,6 +27,7 @@ import static java.lang.Math.abs;
 public class Producer {
     private final Faker faker = new Faker();
     private final ObjectMapper mapper = new ObjectMapper();
+    private Schema schema;
     private Random random;
     private Connection connection;
 
@@ -104,13 +110,6 @@ public class Producer {
         var price = (drug.getPrice() + drug.getPrice()*(discount/100));
 
         return mapper.writeValueAsString(new Prescription(name.firstName(), name.lastName(), drug.getCip(), price, pharmacy.getId()));
-        /*
-        return "{\"nom\":\"" + name.lastName() + "\"," +
-        "\"prenom\":\"" + name.firstName() + "\"," +
-        "\"cip\":" + drug.getCip() + "," +
-        "\"prix\":" + (drug.getPrice() + drug.getPrice()*(discount/100)) + ","+
-        "\"idPharma\":" + pharmacy.getId() + "}";
-         */
     }
 
     private String getRandomPrescription() throws JsonProcessingException {
@@ -126,7 +125,7 @@ public class Producer {
         }
     }
 
-    private boolean sendRandomPrescription(KafkaProducer<String, String> producer, String topic) throws JsonProcessingException {
+    private boolean sendRandomPrescription(KafkaProducer<String, byte[]> producer, String topic) throws JsonProcessingException {
         var prescription = getRandomPrescription();
 
         if (prescription.equals(""))
@@ -138,7 +137,7 @@ public class Producer {
     }
 
     public boolean publishRandomPrescription(String topic) {
-        try (KafkaProducer<String, String> kafkaProducer = connectKafkaProducer()) {
+        try (KafkaProducer<String, byte[]> kafkaProducer = connectKafkaProducer()) {
             return sendRandomPrescription(kafkaProducer, topic);
         } catch (Exception e) {
             System.out.println("Error " + e);
@@ -153,7 +152,7 @@ public class Producer {
         if (0 > delay)
             throw new IllegalArgumentException("Delay have to be positive ("+delay+")");
 
-        try (KafkaProducer<String, String> kafkaProducer = connectKafkaProducer()) {
+        try (KafkaProducer<String, byte[]> kafkaProducer = connectKafkaProducer()) {
             for (var i = 0; i < nbMessages; i++) {
                 if (!sendRandomPrescription(kafkaProducer, topic))
                     return false;
@@ -182,6 +181,9 @@ public class Producer {
         var t = new Prescription("test", "test", 1, 10, 2);
         var res = producer.mapper.writeValueAsString(t);
         System.out.println(res);
+
+        var test = new GenericData.Record("../resources/Prescription.avsc");
+
 
         //System.out.println(producer.publishRandomPrescription(topic));
         //System.out.println(producer.publishRandomPrescriptions(10, 100, topic));
