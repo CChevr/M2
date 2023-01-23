@@ -1,3 +1,6 @@
+lancer zookeeper
+zkServer.sh start
+
 lancer le serveur Kafka
 ./kafka-server-start.sh -daemon ../config/server.properties
 

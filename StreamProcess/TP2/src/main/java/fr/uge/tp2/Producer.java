@@ -1,9 +1,12 @@
 package fr.uge.tp2;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import fr.uge.tp2.models.Drug;
 import fr.uge.tp2.models.Pharmacy;
+import fr.uge.tp2.models.Prescription;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -19,6 +22,7 @@ import static java.lang.Math.abs;
 
 public class Producer {
     private final Faker faker = new Faker();
+    private final ObjectMapper mapper = new ObjectMapper();
     private Random random;
     private Connection connection;
 
@@ -97,15 +101,20 @@ public class Producer {
         return faker.name();
     }
 
-    private String getJson(Name name, Drug drug, Pharmacy pharmacy, int discount) {
+    private String getJson(Name name, Drug drug, Pharmacy pharmacy, int discount) throws JsonProcessingException {
+        var price = (drug.getPrice() + drug.getPrice()*(discount/100));
+
+        return mapper.writeValueAsString(new Prescription(name.firstName(), name.lastName(), drug.getCip(), price, pharmacy.getId()));
+        /*
         return "{\"nom\":\"" + name.lastName() + "\"," +
         "\"prenom\":\"" + name.firstName() + "\"," +
         "\"cip\":" + drug.getCip() + "," +
         "\"prix\":" + (drug.getPrice() + drug.getPrice()*(discount/100)) + ","+
         "\"idPharma\":" + pharmacy.getId() + "}";
+         */
     }
 
-    private String getRandomPrescription() {
+    private String getRandomPrescription() throws JsonProcessingException {
         var name = getRandomName();
         var drug = getRandomDrug();
         var pharmacy = getRandomPharmacy();
@@ -118,7 +127,7 @@ public class Producer {
         }
     }
 
-    private boolean sendRandomPrescription(KafkaProducer<String, String> producer, String topic) {
+    private boolean sendRandomPrescription(KafkaProducer<String, String> producer, String topic) throws JsonProcessingException {
         var prescription = getRandomPrescription();
 
         if (prescription.equals(""))
@@ -168,9 +177,12 @@ public class Producer {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, JsonProcessingException {
         var producer = new Producer();
-        var topic = "tpdrugs";
+        //var topic = "tpdrugs";
+        var t = new Prescription("test", "test", 1, 10, 2);
+        var res = producer.mapper.writeValueAsString(t);
+        System.out.println(res);
 
         //System.out.println(producer.publishRandomPrescription(topic));
         //System.out.println(producer.publishRandomPrescriptions(10, 100, topic));
