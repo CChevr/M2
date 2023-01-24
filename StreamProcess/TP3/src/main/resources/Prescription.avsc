@@ -6,6 +6,6 @@
         {"name":"nom", "type":"string"},
         {"name":"cip", "type":"int"},
         {"name":"prix", "type":"double"},
-        {"name":"idPharma", "type":"int"},
+        {"name":"idPharma", "type":"int"}
     ]
 }

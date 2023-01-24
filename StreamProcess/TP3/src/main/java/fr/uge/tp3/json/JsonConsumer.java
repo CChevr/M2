@@ -1,4 +1,4 @@
-package fr.uge.tp3;
+package fr.uge.tp3.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import static fr.uge.tp3.Utils.connectKafkaConsumer;
 
-public class Consumer {
+public class JsonConsumer {
     private final ObjectMapper mapper = new ObjectMapper();
 
     private KafkaConsumer<String, String> connectKafka(List<String> topics) {

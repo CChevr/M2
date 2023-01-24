@@ -56,4 +56,15 @@ public class Prescription {
     public void setIdPharma(int idPharma) {
         this.idPharma = idPharma;
     }
+
+    @Override
+    public String toString() {
+        return "Prescription{" +
+                "nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", cip=" + cip +
+                ", prix=" + prix +
+                ", idPharma=" + idPharma +
+                '}';
+    }
 }

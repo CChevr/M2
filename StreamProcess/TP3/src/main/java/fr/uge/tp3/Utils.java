@@ -19,16 +19,6 @@ public class Utils {
         return c;
     }
 
-    public static KafkaProducer<String, byte[]> connectKafkaProducer() {
-        Properties properties = new Properties();
-
-        properties.put("bootstrap.servers", "localhost:9092");
-        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-
-        return new KafkaProducer<>(properties);
-    }
-
     public static KafkaConsumer<String, String> connectKafkaConsumer(List<String> topics) {
         Properties properties = new Properties();
 

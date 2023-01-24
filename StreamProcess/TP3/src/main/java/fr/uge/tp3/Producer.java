@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import com.twitter.bijection.Bijection;
+import fr.uge.tp3.json.JsonSender;
 import fr.uge.tp3.models.Drug;
 import fr.uge.tp3.models.Pharmacy;
 import fr.uge.tp3.models.Prescription;
 import org.apache.avro.Schema;
+import org.apache.avro.data.Json;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.Callback;
@@ -18,6 +20,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
@@ -26,23 +29,27 @@ import static java.lang.Math.abs;
 
 public class Producer {
     private final Faker faker = new Faker();
-    private final ObjectMapper mapper = new ObjectMapper();
-    private Schema schema;
+    private final PrescriptionSender sender;
     private Random random;
     private Connection connection;
 
+    Producer(PrescriptionSender sender) {
+        Objects.requireNonNull(this.sender = sender);
+    }
+
     private boolean connectPSQL() {
-        /*
+
         var url = "localhost:5432";
         var db = "postgres";
         var user = "postgres";
         var password = "motdepasse";
-         */
+
+        /*
         var url = "sqletud.u-pem.fr";
         var db = "cedric.chevreuil_db";
         var user = "cedric.chevreuil";
         var password = "Motdepasse";
-
+        */
         try {
             connection = connectPostgres(url, db, user, password);
             return true;
@@ -106,39 +113,37 @@ public class Producer {
         return faker.name();
     }
 
-    private String getJson(Name name, Drug drug, Pharmacy pharmacy, int discount) throws JsonProcessingException {
-        var price = (drug.getPrice() + drug.getPrice()*(discount/100));
-
-        return mapper.writeValueAsString(new Prescription(name.firstName(), name.lastName(), drug.getCip(), price, pharmacy.getId()));
-    }
-
-    private String getRandomPrescription() throws JsonProcessingException {
+    private Optional<Prescription> getRandomPrescription() throws JsonProcessingException {
         var name = getRandomName();
         var drug = getRandomDrug();
         var pharmacy = getRandomPharmacy();
         var discount = getRandomDiscount(-10, 10);
 
         if (drug.isPresent() && pharmacy.isPresent()) {
-            return getJson(name, drug.get(), pharmacy.get(), discount);
+            var price = (drug.get().getPrice() + drug.get().getPrice()*(discount/100));
+            return Optional.of(new Prescription(
+                    name.firstName(),
+                    name.lastName(),
+                    drug.get().getCip(),
+                    price,
+                    pharmacy.get().getId()));
         } else {
-            return "";
+            return Optional.empty();
         }
     }
 
-    private boolean sendRandomPrescription(KafkaProducer<String, byte[]> producer, String topic) throws JsonProcessingException {
+    private boolean sendRandomPrescription(String topic) throws JsonProcessingException {
         var prescription = getRandomPrescription();
 
-        if (prescription.equals(""))
+        if (prescription.isPresent())
+            return sender.sendPrescription(prescription.get(), topic);
+        else
             return false;
-
-        var record = new ProducerRecord<String, String>(topic, prescription);
-        producer.send(record);
-        return true;
     }
 
     public boolean publishRandomPrescription(String topic) {
-        try (KafkaProducer<String, byte[]> kafkaProducer = connectKafkaProducer()) {
-            return sendRandomPrescription(kafkaProducer, topic);
+        try {
+            return sendRandomPrescription(topic);
         } catch (Exception e) {
             System.out.println("Error " + e);
             return false;
@@ -152,9 +157,9 @@ public class Producer {
         if (0 > delay)
             throw new IllegalArgumentException("Delay have to be positive ("+delay+")");
 
-        try (KafkaProducer<String, byte[]> kafkaProducer = connectKafkaProducer()) {
+        try (sender) {
             for (var i = 0; i < nbMessages; i++) {
-                if (!sendRandomPrescription(kafkaProducer, topic))
+                if (!sendRandomPrescription(topic))
                     return false;
                 Thread.sleep(delay);
             }
@@ -166,23 +171,14 @@ public class Producer {
         return true;
     }
 
-    private class ExempleCallback implements Callback {
-        @Override
-        public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-            if (e != null) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void main(String[] args) throws InterruptedException, JsonProcessingException {
-        var producer = new Producer();
-        //var topic = "tpdrugs";
+    public static void main(String[] args) throws JsonProcessingException {
+        var sender = new JsonSender();
+        var producer = new Producer(sender);
+        var topic = "tpdrugs";
         var t = new Prescription("test", "test", 1, 10, 2);
-        var res = producer.mapper.writeValueAsString(t);
-        System.out.println(res);
+        producer.sendRandomPrescription(topic);
 
-        var test = new GenericData.Record("../resources/Prescription.avsc");
+        //var test = new GenericData.Record("../resources/Prescription.avsc");
 
 
         //System.out.println(producer.publishRandomPrescription(topic));
