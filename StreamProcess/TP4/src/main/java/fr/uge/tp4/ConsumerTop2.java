@@ -1,5 +1,7 @@
-package fr.uge.tp4.avro;
+package fr.uge.tp4;
 
+import fr.uge.tp4.avro.AvroSeDes;
+import fr.uge.tp4.avro.AvroSender;
 import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -12,12 +14,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
+public class ConsumerTop2 {
+    private final AvroSeDes<Prescription> serializer;
+    private final String targetTopic = "top2";
+    private final PrescriptionSender sender;
 
-public class AvroConsumer {
-    private final AvroSeDes<Prescription> deserializer;
-
-    private AvroConsumer(AvroSeDes<Prescription> deserializer) {
-        Objects.requireNonNull(this.deserializer = deserializer);
+    private ConsumerTop2(AvroSeDes<Prescription> serializer, PrescriptionSender sender) {
+        Objects.requireNonNull(this.serializer = serializer);
+        Objects.requireNonNull(this.sender = sender);
     }
 
     private KafkaConsumer<String, byte[]> connectKafka(List<String> topics) {
@@ -50,16 +54,18 @@ public class AvroConsumer {
 
             ConsumerRecords<String, byte[]> records = consumer.poll(oneSecond);
             for (ConsumerRecord<String, byte[]> record : records) {
-                var prescription = deserializer.deserialize(record.value(), new Prescription());
+                var prescription = serializer.deserialize(record.value(), new Prescription());
                 System.out.println(prescription);
+                sender.sendPrescription(prescription, targetTopic, String.valueOf(prescription.getCip()));
             }
         }
     }
 
-    public static AvroConsumer build(Path SchemaPath) throws IOException {
-        Objects.requireNonNull(SchemaPath);
+    public static ConsumerTop2 build(Path schemaPath) throws IOException {
+        Objects.requireNonNull(schemaPath);
 
-        AvroSeDes<Prescription> deserializer = AvroSeDes.build(SchemaPath);
-        return new AvroConsumer(deserializer);
+        AvroSeDes<Prescription> serializer = AvroSeDes.build(schemaPath);
+        var sender = AvroSender.build(schemaPath);
+        return new ConsumerTop2(serializer, sender);
     }
 }

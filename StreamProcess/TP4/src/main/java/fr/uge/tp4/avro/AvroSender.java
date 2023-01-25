@@ -48,6 +48,23 @@ public class AvroSender implements PrescriptionSender {
     }
 
     @Override
+    public boolean sendPrescription(Prescription prescription, String topic, String key){
+        Objects.requireNonNull(prescription);
+        Objects.requireNonNull(topic);
+
+        try {
+            var serialized = serializer.serialize(prescription);
+            ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, key, serialized);
+            kafkaProducer.send(record);
+        } catch (Exception e) {
+            System.out.println("Error sending : "+e);
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public void close() throws Exception {
         kafkaProducer.close();
     }

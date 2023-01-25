@@ -53,6 +53,26 @@ public class JsonSender implements PrescriptionSender {
     }
 
     @Override
+    public boolean sendPrescription(Prescription prescription, String topic, String key) {
+        Objects.requireNonNull(prescription);
+        Objects.requireNonNull(topic);
+
+        try {
+            var json = getJson(prescription);
+
+            if (json.equals(""))
+                return false;
+
+            var record = new ProducerRecord<>(topic, key, json);
+            kafkaProducer.send(record);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error : "+e);
+            return false;
+        }
+    }
+
+    @Override
     public void close() {
         kafkaProducer.close();
     }

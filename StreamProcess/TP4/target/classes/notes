@@ -26,8 +26,12 @@ Lancer les 3 bokers
 Creer un nouveau topic
     replica factor 3 + partitions 3
 ./kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --replication-factor 3 --partitions 3 --create --topic tpcluster
+./kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --replication-factor 3 --partitions 3 --create --topic top2
 
 écrouter les 3 topics
 ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic tpcluster
 ./kafka-console-consumer.sh --bootstrap-server localhost:9093 --topic tpcluster
 ./kafka-console-consumer.sh --bootstrap-server localhost:9094 --topic tpcluster
+
+./kafka-console-consumer.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --topic top2
+
