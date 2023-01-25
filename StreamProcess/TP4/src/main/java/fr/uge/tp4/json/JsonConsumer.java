@@ -1,8 +1,8 @@
-package fr.uge.tp3;
+package fr.uge.tp4.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.uge.tp3.models.Prescription;
+import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -10,9 +10,9 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import java.time.Duration;
 import java.util.List;
 
-import static fr.uge.tp3.Utils.connectKafkaConsumer;
+import static fr.uge.tp4.Utils.connectKafkaConsumer;
 
-public class Consumer {
+public class JsonConsumer {
     private final ObjectMapper mapper = new ObjectMapper();
 
     private KafkaConsumer<String, String> connectKafka(List<String> topics) {
@@ -36,7 +36,6 @@ public class Consumer {
 
             ConsumerRecords<String, String> records = consumer.poll(Duration.ZERO);
             for (ConsumerRecord<String, String> record : records) {
-                System.out.println("================================================================");
                 System.out.println(record.value());
                 try {
                     var prescription = mapper.readValue(record.value(), Prescription.class);

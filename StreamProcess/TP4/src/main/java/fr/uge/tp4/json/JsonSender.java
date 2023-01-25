@@ -1,9 +1,9 @@
-package fr.uge.tp3.json;
+package fr.uge.tp4.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.uge.tp3.PrescriptionSender;
-import fr.uge.tp3.models.Prescription;
+import fr.uge.tp4.PrescriptionSender;
+import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 

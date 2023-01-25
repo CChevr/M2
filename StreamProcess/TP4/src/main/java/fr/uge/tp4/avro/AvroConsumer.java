@@ -1,6 +1,6 @@
-package fr.uge.tp3.avro;
+package fr.uge.tp4.avro;
 
-import fr.uge.tp3.models.Prescription;
+import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -23,7 +23,7 @@ public class AvroConsumer {
     private KafkaConsumer<String, byte[]> connectKafka(List<String> topics) {
         Properties properties = new Properties();
 
-        properties.put("bootstrap.servers", "localhost:9092");
+        properties.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
         properties.put("group.id", "group1");
@@ -50,7 +50,6 @@ public class AvroConsumer {
 
             ConsumerRecords<String, byte[]> records = consumer.poll(oneSecond);
             for (ConsumerRecord<String, byte[]> record : records) {
-                System.out.println(record.value());
                 var prescription = deserializer.deserialize(record.value(), new Prescription());
                 System.out.println(prescription);
 

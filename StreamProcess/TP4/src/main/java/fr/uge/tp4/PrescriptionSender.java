@@ -1,6 +1,6 @@
-package fr.uge.tp3;
+package fr.uge.tp4;
 
-import fr.uge.tp3.models.Prescription;
+import fr.uge.tp4.models.Prescription;
 
 public interface PrescriptionSender extends AutoCloseable {
     boolean sendPrescription(Prescription prescription, String topic);

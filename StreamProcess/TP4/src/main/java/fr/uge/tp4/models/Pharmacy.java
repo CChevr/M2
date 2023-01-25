@@ -1,4 +1,4 @@
-package fr.uge.tp3.models;
+package fr.uge.tp4.models;
 
 public class Pharmacy {
     private final int id;

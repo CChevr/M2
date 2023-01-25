@@ -15,3 +15,19 @@ Lire les infos du topic tpdrugs
 
 Lire l'offset sur le topic tpdrugs
 ./kafka-run-class.sh kafka.tools.GetOffsetShell --bootstrap-server localhost:9092 --topic tpdrugs
+
+
+GROUPE 3
+Lancer les 3 bokers
+./kafka-server-start.sh -daemon ../config/server.properties
+./kafka-server-start.sh -daemon ../config/server2.properties
+./kafka-server-start.sh -daemon ../config/server3.properties
+
+Creer un nouveau topic
+    replica factor 3 + partitions 3
+./kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --replication-factor 3 --partitions 3 --create --topic tpcluster
+
+écrouter les 3 topics
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic tpcluster
+./kafka-console-consumer.sh --bootstrap-server localhost:9093 --topic tpcluster
+./kafka-console-consumer.sh --bootstrap-server localhost:9094 --topic tpcluster

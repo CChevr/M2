@@ -1,9 +1,7 @@
-package fr.uge.tp3;
+package fr.uge.tp4;
 
-import fr.uge.tp3.avro.AvroConsumer;
-import fr.uge.tp3.avro.AvroSender;
-import fr.uge.tp3.json.JsonConsumer;
-import fr.uge.tp3.json.JsonSender;
+import fr.uge.tp4.avro.AvroConsumer;
+import fr.uge.tp4.avro.AvroSender;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -12,7 +10,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        var topic = "tpdrugs";
+        var topic = "tpcluster";
         //var sender = new JsonSender();
         var sender = AvroSender.build(Path.of("src/main/resources/Prescription.avsc"));
         var producer = new Producer(sender);

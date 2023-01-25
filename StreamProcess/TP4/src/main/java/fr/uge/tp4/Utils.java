@@ -1,7 +1,6 @@
-package fr.uge.tp3;
+package fr.uge.tp4;
 
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

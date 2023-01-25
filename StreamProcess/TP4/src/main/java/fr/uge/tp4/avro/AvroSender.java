@@ -1,8 +1,7 @@
-package fr.uge.tp3.avro;
+package fr.uge.tp4.avro;
 
-import fr.uge.tp3.PrescriptionSender;
-import fr.uge.tp3.models.Prescription;
-import org.apache.avro.Schema;
+import fr.uge.tp4.PrescriptionSender;
+import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
@@ -23,7 +22,7 @@ public class AvroSender implements PrescriptionSender {
     private static KafkaProducer<String, byte[]> connectKafkaProducer() {
         Properties properties = new Properties();
 
-        properties.put("bootstrap.servers", "localhost:9092");
+        properties.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 

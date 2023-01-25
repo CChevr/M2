@@ -1,30 +1,19 @@
-package fr.uge.tp3;
+package fr.uge.tp4;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
-import com.twitter.bijection.Bijection;
-import fr.uge.tp3.json.JsonSender;
-import fr.uge.tp3.models.Drug;
-import fr.uge.tp3.models.Pharmacy;
-import fr.uge.tp3.models.Prescription;
-import org.apache.avro.Schema;
-import org.apache.avro.data.Json;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import fr.uge.tp4.json.JsonSender;
+import fr.uge.tp4.models.Drug;
+import fr.uge.tp4.models.Pharmacy;
+import fr.uge.tp4.models.Prescription;
 
-import java.io.File;
 import java.sql.Connection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-import static fr.uge.tp3.Utils.*;
+import static fr.uge.tp4.Utils.*;
 import static java.lang.Math.abs;
 
 public class Producer {

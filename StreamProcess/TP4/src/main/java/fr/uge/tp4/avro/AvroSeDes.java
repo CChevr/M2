@@ -1,8 +1,8 @@
-package fr.uge.tp3.avro;
+package fr.uge.tp4.avro;
 
 import com.twitter.bijection.Injection;
 import com.twitter.bijection.avro.GenericAvroCodecs;
-import fr.uge.tp3.models.Prescription;
+import fr.uge.tp4.models.Prescription;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
