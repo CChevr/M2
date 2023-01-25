@@ -25,7 +25,7 @@ public class AvroSender implements PrescriptionSender {
 
         properties.put("bootstrap.servers", "localhost:9092");
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        properties.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 
         return new KafkaProducer<>(properties);
     }
@@ -40,6 +40,7 @@ public class AvroSender implements PrescriptionSender {
             var serialized = serializer.serialize(prescription);
             ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, serialized);
             kafkaProducer.send(record);
+            System.out.println("TRY===============================");
         } catch (Exception e) {
             System.out.println("Error sending : "+e);
             return false;

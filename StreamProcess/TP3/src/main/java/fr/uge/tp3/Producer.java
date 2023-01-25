@@ -38,18 +38,18 @@ public class Producer {
     }
 
     private boolean connectPSQL() {
-
+        /*
         var url = "localhost:5432";
         var db = "postgres";
         var user = "postgres";
         var password = "motdepasse";
+        */
 
-        /*
         var url = "sqletud.u-pem.fr";
         var db = "cedric.chevreuil_db";
         var user = "cedric.chevreuil";
         var password = "Motdepasse";
-        */
+
         try {
             connection = connectPostgres(url, db, user, password);
             return true;
@@ -135,10 +135,10 @@ public class Producer {
     private boolean sendRandomPrescription(String topic) throws JsonProcessingException {
         var prescription = getRandomPrescription();
 
-        if (prescription.isPresent())
-            return sender.sendPrescription(prescription.get(), topic);
-        else
+        if (prescription.isEmpty())
             return false;
+
+        return sender.sendPrescription(prescription.get(), topic);
     }
 
     public boolean publishRandomPrescription(String topic) {

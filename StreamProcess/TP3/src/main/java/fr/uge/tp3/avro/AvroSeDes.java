@@ -28,7 +28,7 @@ public class AvroSeDes<T> {
             field.setAccessible(true);
             avroRecord.put(field.getName(), field.get(object));
         }
-
+        
         return recordInjection.apply(avroRecord);
     }
 

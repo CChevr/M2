@@ -25,7 +25,7 @@ public class AvroConsumer {
 
         properties.put("bootstrap.servers", "localhost:9092");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
         properties.put("group.id", "group1");
 
         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(properties);
