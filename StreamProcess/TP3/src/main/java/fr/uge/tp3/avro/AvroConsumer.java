@@ -50,7 +50,6 @@ public class AvroConsumer {
 
             ConsumerRecords<String, byte[]> records = consumer.poll(oneSecond);
             for (ConsumerRecord<String, byte[]> record : records) {
-                System.out.println("================================================================");
                 System.out.println(record.value());
                 var prescription = deserializer.deserialize(record.value(), new Prescription());
                 System.out.println(prescription);

@@ -36,7 +36,6 @@ public class JsonConsumer {
 
             ConsumerRecords<String, String> records = consumer.poll(Duration.ZERO);
             for (ConsumerRecord<String, String> record : records) {
-                System.out.println("================================================================");
                 System.out.println(record.value());
                 try {
                     var prescription = mapper.readValue(record.value(), Prescription.class);
