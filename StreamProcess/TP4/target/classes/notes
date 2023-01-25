@@ -1,0 +1,17 @@
+lancer zookeeper
+zkServer.sh start
+
+lancer le serveur Kafka
+./kafka-server-start.sh -daemon ../config/server.properties
+
+Créer un topic tpdrugs sur le port 9092
+./kafka-topics.sh --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --create --topic tpdrugs
+
+Créer une consumer sur le topic tpdrugs écoutant le port 9092
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic tpdrugs
+
+Lire les infos du topic tpdrugs
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic tpdrugs
+
+Lire l'offset sur le topic tpdrugs
+./kafka-run-class.sh kafka.tools.GetOffsetShell --bootstrap-server localhost:9092 --topic tpdrugs
