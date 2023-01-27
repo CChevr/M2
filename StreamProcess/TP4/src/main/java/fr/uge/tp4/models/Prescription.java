@@ -17,6 +17,21 @@ public class Prescription {
         this.idPharma = idPharma;
     }
 
+    public static Prescription copy(Prescription toCopy) {
+        return new Prescription(toCopy.nom,
+                toCopy.prenom,
+                toCopy.cip,
+                toCopy.prix,
+                toCopy.idPharma);
+    }
+
+    public Prescription anonymize() {
+        this.nom = "***";
+        this.prenom = "***";
+
+        return this;
+    }
+
     public String getNom() {
         return nom;
     }

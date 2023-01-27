@@ -17,7 +17,7 @@ public class Main {
         Path schemaPath = Path.of("src/main/resources/Prescription.avsc");
         int numConsumers = 3;
         final List<ConsumerG3> consumers = new ArrayList<>();
-        String groupId = "consumer-group-3";
+        String groupId = "consumer-group-3-";
         List<String> topicsG3 = List.of("top2");
         ExecutorService executor = Executors.newFixedThreadPool(numConsumers);
 
@@ -27,6 +27,9 @@ public class Main {
 
         var producerThread = new Thread(() -> producer.publishRandomPrescriptions(10, 200, topic));
         var consumerThread = new Thread(() -> consumer.read(List.of(topic)));
+
+        producerThread.start();
+        consumerThread.start();
 
         for (int i = 0; i < numConsumers; i++) {
             ConsumerG3 c = ConsumerG3.build(i, groupId, topicsG3, schemaPath);
@@ -49,13 +52,8 @@ public class Main {
             }
         });
 
-        producerThread.start();
-        consumerThread.start();
-
         producerThread.join();
         Thread.sleep(4000);
         consumerThread.interrupt();
-
-
     }
 }

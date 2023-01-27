@@ -30,7 +30,7 @@ public class ConsumerTop2 {
         properties.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
-        properties.put("group.id", "group1");
+        properties.put("group.id", "group2aa");
 
         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(properties);
         consumer.subscribe(topics);
@@ -45,9 +45,9 @@ public class ConsumerTop2 {
         while (true) {
             if (Thread.interrupted()) {
                 try {
-                    consumer.close();
-                } finally {
                     consumer.wakeup();
+                } finally {
+                    consumer.close();
                 }
                 return;
             }
@@ -55,7 +55,7 @@ public class ConsumerTop2 {
             ConsumerRecords<String, byte[]> records = consumer.poll(oneSecond);
             for (ConsumerRecord<String, byte[]> record : records) {
                 var prescription = serializer.deserialize(record.value(), new Prescription());
-                System.out.println(prescription);
+                //System.out.println(prescription);
                 sender.sendPrescription(prescription, targetTopic, String.valueOf(prescription.getCip()));
             }
         }

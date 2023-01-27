@@ -27,17 +27,19 @@ public class Producer {
     }
 
     private boolean connectPSQL() {
-        /*
-        var url = "localhost:5432";
-        var db = "postgres";
-        var user = "postgres";
-        var password = "motdepasse";
-        */
 
+        var url = "localhost:5432";
+        var db = "cedric";
+        var user = "cedric";
+        var password = "motdepasse";
+
+
+        /*
         var url = "sqletud.u-pem.fr";
         var db = "cedric.chevreuil_db";
         var user = "cedric.chevreuil";
         var password = "Motdepasse";
+        */
 
         try {
             connection = connectPostgres(url, db, user, password);
@@ -148,9 +150,10 @@ public class Producer {
 
         try (sender) {
             for (var i = 0; i < nbMessages; i++) {
-                if (!sendRandomPrescription(topic))
-                    return false;
                 Thread.sleep(delay);
+                if (!sendRandomPrescription(topic)) {
+                    return false;
+                }
             }
         } catch (Exception e) {
             System.out.println("Error "+e);

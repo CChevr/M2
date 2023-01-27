@@ -50,7 +50,8 @@ public class ConsumerG3 implements Runnable {
                     var prescription = deserializer.deserialize(record.value(), new Prescription());
                     drugsCount.merge(prescription.getCip(), prescription.getPrix(), Double::sum);
 
-                    System.out.println(this.id + " on partition " + record.partition() + " : " +prescription);
+                    System.out.println(this.id + " on partition " + record.partition() + " : " +prescription + " cumul : " + drugsCount.get(prescription.getCip()) + "$");
+
                 }
             }
         } catch (WakeupException e) {
@@ -59,7 +60,18 @@ public class ConsumerG3 implements Runnable {
             consumer.close();
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Consumer " + id + "\n");
+        drugsCount.entrySet()
+                .forEach(e -> sb.append("Drug " + e.getKey() + " : " + e.getValue() + "$\n"));
+        return sb.toString();
+    }
+
     public void shutdown() {
+        System.out.println(this);
         consumer.wakeup();
     }
 

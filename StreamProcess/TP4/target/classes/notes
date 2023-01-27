@@ -1,5 +1,11 @@
+connect database
+sudo -u postgres psql
+
 lancer zookeeper
 zkServer.sh start
+
+supprimer topic
+./kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --delete -–topic tpcluster
 
 lancer le serveur Kafka
 ./kafka-server-start.sh -daemon ../config/server.properties
