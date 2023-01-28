@@ -22,40 +22,13 @@ public class Producer {
     private Random random;
     private Connection connection;
 
-    Producer(PrescriptionSender sender) {
+    Producer(Connection connection, PrescriptionSender sender) {
         Objects.requireNonNull(this.sender = sender);
-    }
-
-    private boolean connectPSQL() {
-
-        var url = "localhost:5432";
-        var db = "cedric";
-        var user = "cedric";
-        var password = "motdepasse";
-
-
-        /*
-        var url = "sqletud.u-pem.fr";
-        var db = "cedric.chevreuil_db";
-        var user = "cedric.chevreuil";
-        var password = "Motdepasse";
-        */
-
-        try {
-            connection = connectPostgres(url, db, user, password);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Error " + e);
-            return false;
-        }
+        Objects.requireNonNull(this.connection = connection);
     }
 
     private Optional<Drug> getRandomDrug() {
         try {
-            if (null == connection) {
-                connectPSQL();
-            }
-
             var query = "SELECT cip, prix FROM drugs4projet ORDER BY RANDOM() LIMIT 1";
             var response = connection.prepareStatement(query).executeQuery();
 
@@ -70,10 +43,6 @@ public class Producer {
 
     private Optional<Pharmacy> getRandomPharmacy() {
         try {
-            if (null == connection) {
-                connectPSQL();
-            }
-
             var query = "SELECT id, nom, adresse, depart, region FROM pharm4projet ORDER BY RANDOM() LIMIT 1";
             var response = connection.prepareStatement(query).executeQuery();
 
@@ -161,19 +130,5 @@ public class Producer {
         }
 
         return true;
-    }
-
-    public static void main(String[] args) throws JsonProcessingException {
-        var sender = new JsonSender();
-        var producer = new Producer(sender);
-        var topic = "tpdrugs";
-        var t = new Prescription("test", "test", 1, 10, 2);
-        producer.sendRandomPrescription(topic);
-
-        //var test = new GenericData.Record("../resources/Prescription.avsc");
-
-
-        //System.out.println(producer.publishRandomPrescription(topic));
-        //System.out.println(producer.publishRandomPrescriptions(10, 100, topic));
     }
 }

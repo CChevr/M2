@@ -9,18 +9,23 @@ import fr.uge.tp4.json.JsonSender;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static fr.uge.tp4.Utils.connectPostgres;
+
 public class Main {
+    private static Connection connection;
 
     private static void q1() throws InterruptedException {
         var topic = "tpdrugs";
         var sender = new JsonSender();
-        var producer = new Producer(sender);
+        var producer = new Producer(connection, sender);
         var consumer = new JsonConsumer();
 
         var producerThread = new Thread(() -> producer.publishRandomPrescriptions(10, 200, topic));
@@ -38,7 +43,7 @@ public class Main {
         var topic = "tpdrugs";
         var schemaPath = Path.of("src/main/resources/Prescription.avsc");
         var sender = AvroSender.build(schemaPath);
-        var producer = new Producer(sender);
+        var producer = new Producer(connection, sender);
         var consumer = AvroConsumer.build(schemaPath);
 
         var producerThread = new Thread(() -> producer.publishRandomPrescriptions(10, 200, topic));
@@ -62,7 +67,7 @@ public class Main {
         ExecutorService executor = Executors.newFixedThreadPool(numConsumers);
 
         var sender = AvroSender.build(schemaPath);
-        var producer = new Producer(sender);
+        var producer = new Producer(connection, sender);
         var consSend = AvroConsSend.build(schemaPath);
 
         var producerThread = new Thread(() -> producer.publishRandomPrescriptions(10, 200, topicSrc));
@@ -99,7 +104,16 @@ public class Main {
         });
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException, IOException, SQLException, ClassNotFoundException {
+        // Database information
+        var url = "localhost:5432";
+        var db = "cedric";
+        var user = "cedric";
+        var password = "motdepasse";
+
+        Main.connection = connectPostgres(url, db, user, password);
+
+        // Exercises
         q1();
         q2();
         q3();
