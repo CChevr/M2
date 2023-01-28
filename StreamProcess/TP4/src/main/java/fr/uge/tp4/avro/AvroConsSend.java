@@ -16,20 +16,15 @@ import java.util.Properties;
 public class AvroConsSend {
     private final AvroSeDes<Prescription> serializer;
     private final PrescriptionSender sender;
+    private final Properties properties;
 
-    private AvroConsSend(AvroSeDes<Prescription> serializer, PrescriptionSender sender) {
+    private AvroConsSend(Properties properties, AvroSeDes<Prescription> serializer, PrescriptionSender sender) {
         Objects.requireNonNull(this.serializer = serializer);
         Objects.requireNonNull(this.sender = sender);
+        Objects.requireNonNull(this.properties = properties);
     }
 
     private KafkaConsumer<String, byte[]> connectKafka(List<String> topics) {
-        Properties properties = new Properties();
-
-        properties.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
-        properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
-        properties.put("group.id", "group1");
-
         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(properties);
         consumer.subscribe(topics);
         return consumer;
@@ -58,11 +53,14 @@ public class AvroConsSend {
         }
     }
 
-    public static AvroConsSend build(Path schemaPath) throws IOException {
+    public static AvroConsSend build(Properties sendProps, Properties consProps, Path schemaPath) throws IOException {
         Objects.requireNonNull(schemaPath);
+        Objects.requireNonNull(sendProps);
+        Objects.requireNonNull(consProps);
 
         AvroSeDes<Prescription> serializer = AvroSeDes.build(schemaPath);
-        var sender = AvroSender.build(schemaPath);
-        return new AvroConsSend(serializer, sender);
+        var sender = AvroSender.build(sendProps, schemaPath);
+
+        return new AvroConsSend(consProps, serializer, sender);
     }
 }

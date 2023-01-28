@@ -11,6 +11,7 @@ import fr.uge.tp4.models.Prescription;
 import java.sql.Connection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Random;
 
 import static fr.uge.tp4.Utils.*;

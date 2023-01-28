@@ -23,17 +23,12 @@ public class AvroConsAnalyse implements Runnable {
     private final AvroSeDes<Prescription> deserializer;
 
     private AvroConsAnalyse(int id,
-                            String groupId,
+                            Properties properties,
                             List<String> topics,
                             AvroSeDes<Prescription> deserializer) {
         this.id = id;
         this.topics = topics;
-        Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094,");
-        props.put("group.id", groupId);
-        props.put("key.deserializer", StringDeserializer.class.getName());
-        props.put("value.deserializer", ByteArrayDeserializer.class.getName());
-        this.consumer = new KafkaConsumer<>(props);
+        this.consumer = new KafkaConsumer<>(properties);
         this.deserializer = deserializer;
     }
 
@@ -74,12 +69,12 @@ public class AvroConsAnalyse implements Runnable {
     }
 
     public static AvroConsAnalyse build(int id,
-                                        String groupId,
+                                        Properties properties,
                                         List<String> topics,
                                         Path schemaPath) throws IOException {
         AvroSeDes<Prescription> serializer = AvroSeDes.build(schemaPath);
 
-        return new AvroConsAnalyse(id, groupId, topics, serializer);
+        return new AvroConsAnalyse(id, properties, topics, serializer);
     }
 }
 

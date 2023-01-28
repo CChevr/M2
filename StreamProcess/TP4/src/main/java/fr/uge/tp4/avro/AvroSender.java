@@ -19,13 +19,7 @@ public class AvroSender implements PrescriptionSender {
         Objects.requireNonNull(this.serializer = serializer);
     }
 
-    private static KafkaProducer<String, byte[]> connectKafkaProducer() {
-        Properties properties = new Properties();
-
-        properties.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
-        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
-
+    private static KafkaProducer<String, byte[]> connectKafkaProducer(Properties properties) {
         return new KafkaProducer<>(properties);
     }
 
@@ -69,11 +63,12 @@ public class AvroSender implements PrescriptionSender {
         kafkaProducer.close();
     }
 
-    public static AvroSender build(Path schemaPath) throws IOException {
+    public static AvroSender build(Properties properties, Path schemaPath) throws IOException {
         Objects.requireNonNull(schemaPath);
+        Objects.requireNonNull(properties);
 
         AvroSeDes<Prescription> serializer = AvroSeDes.build(schemaPath);
-        KafkaProducer<String, byte[]> kafkaProducer = connectKafkaProducer();
+        KafkaProducer<String, byte[]> kafkaProducer = connectKafkaProducer(properties);
 
         return new AvroSender(kafkaProducer, serializer);
     }
