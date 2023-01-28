@@ -33,8 +33,8 @@ public class AnonymousMain {
             }
         });
 
-        //threadProducer.start();
-        threadKStreamAnonym.start();
+        threadProducer.start();
         threadKStreamDisplay.start();
+        threadKStreamAnonym.start();
     }
 }

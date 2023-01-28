@@ -74,7 +74,7 @@ public class Prescription {
 
     @Override
     public String toString() {
-        return "Prescription{" +
+        return "{" +
                 "nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +
                 ", cip=" + cip +

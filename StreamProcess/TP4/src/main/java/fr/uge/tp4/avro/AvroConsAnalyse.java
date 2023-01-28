@@ -1,6 +1,5 @@
-package fr.uge.tp4;
+package fr.uge.tp4.avro;
 
-import fr.uge.tp4.avro.AvroSeDes;
 import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -16,17 +15,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-public class ConsumerG3 implements Runnable {
+public class AvroConsAnalyse implements Runnable {
     private final HashMap<Integer, Double> drugsCount = new HashMap<>();
     private final KafkaConsumer<String, byte[]> consumer;
     private final List<String> topics;
     private final int id;
     private final AvroSeDes<Prescription> deserializer;
 
-    private ConsumerG3(int id,
-                       String groupId,
-                       List<String> topics,
-                       AvroSeDes<Prescription> deserializer) {
+    private AvroConsAnalyse(int id,
+                            String groupId,
+                            List<String> topics,
+                            AvroSeDes<Prescription> deserializer) {
         this.id = id;
         this.topics = topics;
         Properties props = new Properties();
@@ -51,7 +50,6 @@ public class ConsumerG3 implements Runnable {
                     drugsCount.merge(prescription.getCip(), prescription.getPrix(), Double::sum);
 
                     System.out.println(this.id + " on partition " + record.partition() + " : " +prescription + " cumul : " + drugsCount.get(prescription.getCip()) + "$");
-
                 }
             }
         } catch (WakeupException e) {
@@ -75,13 +73,13 @@ public class ConsumerG3 implements Runnable {
         consumer.wakeup();
     }
 
-    public static ConsumerG3 build(int id,
-                                   String groupId,
-                                   List<String> topics,
-                                   Path schemaPath) throws IOException {
+    public static AvroConsAnalyse build(int id,
+                                        String groupId,
+                                        List<String> topics,
+                                        Path schemaPath) throws IOException {
         AvroSeDes<Prescription> serializer = AvroSeDes.build(schemaPath);
 
-        return new ConsumerG3(id, groupId, topics, serializer);
+        return new AvroConsAnalyse(id, groupId, topics, serializer);
     }
 }
 
