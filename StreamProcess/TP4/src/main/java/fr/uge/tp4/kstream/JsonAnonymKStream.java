@@ -6,6 +6,7 @@ import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.Consumed;
@@ -41,7 +42,7 @@ public class JsonAnonymKStream {
     public static void run(String topicSrc, String topicDest) throws InterruptedException {
         // Configuration
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "Anonymous-prescriptions-producer");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "Anonymous-prescriptions");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
@@ -57,11 +58,10 @@ public class JsonAnonymKStream {
         KStream<String, String> anonymized = source.mapValues(JsonAnonymKStream::deserialize)
                 .filter((key, value) -> null != value)
                 .mapValues(Prescription::anonymize)
-                .mapValues(JsonAnonymKStream::serialize)
+                .map((k, v) -> new KeyValue<>("1", serialize(v)))
                 .filter((key, value) -> null != value);
 
         // Sink processor
-        //anonymized.foreach((k, v) -> System.out.println(k + " " + v));
         anonymized.to(topicDest, Produced.with(stringSerde, stringSerde));
         anonymized.print(Printed.<String, String>toSysOut().withLabel("Producer"));
 

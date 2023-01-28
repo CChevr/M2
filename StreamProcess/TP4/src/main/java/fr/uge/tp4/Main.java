@@ -126,7 +126,6 @@ public class Main {
         var topicSrc = "tpdrugs";
         var topicDest = "tpanonym";
         var prodProps = jsonKafkaProducer(List.of("localhost:9092"));
-        var consProps = jsonKafkaConsumer("consumer-exo1", List.of("localhost:9092"));
 
         Predicate<Prescription> predicate = prescription -> prescription.getPrix() > 4.;
 
@@ -149,9 +148,10 @@ public class Main {
             }
         });
 
-        threadProducer.start();
         threadKStreamDisplay.start();
         threadKStreamAnonym.start();
+        Thread.sleep(400);
+        threadProducer.start();
     }
 
     public static void main(String[] args) throws InterruptedException, IOException, SQLException, ClassNotFoundException {
@@ -166,7 +166,7 @@ public class Main {
         // Exercises
         //q1();
         //q2();
-        q3();
-        //q6();
+        //q3();
+        q6();
     }
 }
