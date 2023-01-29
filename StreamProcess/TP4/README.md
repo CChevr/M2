@@ -22,7 +22,7 @@ Il contient également le paramétrage pour se connecter à la base de données 
    Pour le moment, on se limite à la bonne réception des messages produits.
 
 > Lancement avec la fonction Main.q2()
-> Le schema de Prescritpion se trouve sans Resources.Prescription.avsc
+> Le schema de Prescritpion se trouve dans Resources.Prescription.avsc
 
 3. Vous changez la configuration de Kafka. On veut maintenant avoir 3 brokers, 3 partitions et un
    replication factor de 3. 
