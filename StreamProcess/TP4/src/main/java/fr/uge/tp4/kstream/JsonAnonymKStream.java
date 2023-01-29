@@ -42,7 +42,7 @@ public class JsonAnonymKStream {
     public static void run(String topicSrc, String topicDest) throws InterruptedException {
         // Configuration
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "Anonymous-prescriptions");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "Anonymous-prescriptions-producer");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
@@ -58,7 +58,7 @@ public class JsonAnonymKStream {
         KStream<String, String> anonymized = source.mapValues(JsonAnonymKStream::deserialize)
                 .filter((key, value) -> null != value)
                 .mapValues(Prescription::anonymize)
-                .map((k, v) -> new KeyValue<>("1", serialize(v)))
+                .mapValues(JsonAnonymKStream::serialize)
                 .filter((key, value) -> null != value);
 
         // Sink processor

@@ -95,11 +95,11 @@ public class Main {
             consumers.add(c);
             executor.submit(c);
         }
+
         // Time for all consumers to join the group
         Thread.sleep(400);
         producerThread.start();
         consSendThread.start();
-
 
         // Interrupt threads
         producerThread.join();
@@ -166,7 +166,7 @@ public class Main {
         // Exercises
         //q1();
         //q2();
-        //q3();
-        q6();
+        q3();
+        //q6();
     }
 }

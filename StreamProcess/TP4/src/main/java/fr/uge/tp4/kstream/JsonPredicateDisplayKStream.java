@@ -31,7 +31,7 @@ public class JsonPredicateDisplayKStream {
     public static void run(String topicSrc, Predicate<Prescription> predicate) throws InterruptedException {
         // Configuration
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "Anonymous-prescriptions");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "Anonymous-prescriptions-consumer");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
@@ -49,7 +49,7 @@ public class JsonPredicateDisplayKStream {
                 .filter((key, value) -> predicate.test(value));
 
         // Sink processor
-        anonymized.print(Printed.<String, Prescription>toSysOut().withLabel("Prescription"));
+        anonymized.print(Printed.<String, Prescription>toSysOut().withLabel("Consumer"));
         anonymized.foreach((k, v) -> System.out.println(k + " " + v));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), streamingConfig);
