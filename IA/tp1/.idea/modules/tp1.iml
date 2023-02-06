@@ -12,6 +12,18 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sbt: com.github.andrewoma.dexx:collection:0.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: commons-cli:commons-cli:1.5.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: commons-codec:commons-codec:1.15:jar" level="project" />
+    <orderEntry type="library" name="sbt: commons-io:commons-io:2.11.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.commons:commons-compress:1.22:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.commons:commons-csv:1.9.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.commons:commons-lang3:3.12.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.jena:jena-base:4.7.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.jena:jena-core:4.7.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.jena:jena-iri:4.7.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.jena:jena-shaded-guava:4.7.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.slf4j:slf4j-api:1.7.36:jar" level="project" />
   </component>
 </module>
