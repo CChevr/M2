@@ -1,5 +1,11 @@
+connect database
+sudo -u postgres psql
+
 lancer zookeeper
 zkServer.sh start
+
+supprimer topic
+./kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --delete -–topic tpcluster
 
 lancer le serveur Kafka
 ./kafka-server-start.sh -daemon ../config/server.properties
@@ -22,7 +28,7 @@ Lancer les 3 bokers
 ./kafka-server-start.sh -daemon ../config/server.properties
 ./kafka-server-start.sh -daemon ../config/server2.properties
 ./kafka-server-start.sh -daemon ../config/server3.properties
-
++
 Creer un nouveau topic
     replica factor 3 + partitions 3
 ./kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --replication-factor 3 --partitions 3 --create --topic tpcluster

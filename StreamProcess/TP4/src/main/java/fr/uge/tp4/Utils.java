@@ -1,12 +1,19 @@
 package fr.uge.tp4;
 
+import fr.uge.tp4.avro.AvroSeDes;
+import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class Utils {
     public static Connection connectPostgres(String url, String db, String user, String password) throws ClassNotFoundException, SQLException {
@@ -18,16 +25,49 @@ public class Utils {
         return c;
     }
 
-    public static KafkaConsumer<String, String> connectKafkaConsumer(List<String> topics) {
-        Properties properties = new Properties();
+    public static Properties jsonKafkaConsumer(String groupId, List<String> servers) {
+        var formattedServers = String.join(",", servers);
 
-        properties.put("bootstrap.servers", "localhost:9092");
-        properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put("group.id", "group1");
+        Properties props = new Properties();
+        props.put("bootstrap.servers", formattedServers);
+        props.put("group.id", groupId);
+        props.put("key.deserializer", StringDeserializer.class.getName());
+        props.put("value.deserializer", StringDeserializer.class.getName());
 
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<String,String>(properties);
-        consumer.subscribe(topics);
-        return consumer;
+        return props;
+    }
+
+    public static Properties jsonKafkaProducer(List<String> servers) {
+        var formattedServers = String.join(",", servers);
+
+        Properties props = new Properties();
+        props.put("bootstrap.servers", formattedServers);
+        props.put("key.serializer", StringSerializer.class.getName());
+        props.put("value.serializer", StringSerializer.class.getName());
+
+        return props;
+    }
+
+    public static Properties avroKafkaConsumer(String groupId, List<String> servers) {
+        var formattedServers = String.join(",", servers);
+
+        Properties props = new Properties();
+        props.put("bootstrap.servers", formattedServers);
+        props.put("group.id", groupId);
+        props.put("key.deserializer", StringDeserializer.class.getName());
+        props.put("value.deserializer", ByteArrayDeserializer.class.getName());
+
+        return props;
+    }
+
+    public static Properties avroKafkaProducer(List<String> servers) {
+        var formattedServers = String.join(",", servers);
+
+        Properties props = new Properties();
+        props.put("bootstrap.servers", formattedServers);
+        props.put("key.serializer", StringSerializer.class.getName());
+        props.put("value.serializer", ByteArraySerializer.class.getName());
+
+        return props;
     }
 }

@@ -20,7 +20,10 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/cedric/Documents/M2/StreamProcess/TP4",
+    "spring.configuration.checksum": "99171d3a2f274547100bf2bfca5a0f6f",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -32,8 +35,12 @@
       <option name="presentableId" value="Default" />
       <updated>1669127078141</updated>
       <workItem from="1669127078503" duration="15000" />
+      <workItem from="1674686943489" duration="218000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

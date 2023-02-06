@@ -1,6 +1,5 @@
-package fr.uge.tp4;
+package fr.uge.tp4.avro;
 
-import fr.uge.tp4.avro.AvroSeDes;
 import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -16,25 +15,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-public class ConsumerG3 implements Runnable {
+public class AvroConsAnalyse implements Runnable {
     private final HashMap<Integer, Double> drugsCount = new HashMap<>();
     private final KafkaConsumer<String, byte[]> consumer;
     private final List<String> topics;
     private final int id;
     private final AvroSeDes<Prescription> deserializer;
 
-    private ConsumerG3(int id,
-                       String groupId,
-                       List<String> topics,
-                       AvroSeDes<Prescription> deserializer) {
+    private AvroConsAnalyse(int id,
+                            Properties properties,
+                            List<String> topics,
+                            AvroSeDes<Prescription> deserializer) {
         this.id = id;
         this.topics = topics;
-        Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094,");
-        props.put("group.id", groupId);
-        props.put("key.deserializer", StringDeserializer.class.getName());
-        props.put("value.deserializer", ByteArrayDeserializer.class.getName());
-        this.consumer = new KafkaConsumer<>(props);
+        this.consumer = new KafkaConsumer<>(properties);
         this.deserializer = deserializer;
     }
 
@@ -50,7 +44,7 @@ public class ConsumerG3 implements Runnable {
                     var prescription = deserializer.deserialize(record.value(), new Prescription());
                     drugsCount.merge(prescription.getCip(), prescription.getPrix(), Double::sum);
 
-                    System.out.println(this.id + " on partition " + record.partition() + " : " +prescription);
+                    System.out.println(this.id + " on partition " + record.partition() + " : " +prescription + " cumul : " + drugsCount.get(prescription.getCip()) + "$");
                 }
             }
         } catch (WakeupException e) {
@@ -59,17 +53,28 @@ public class ConsumerG3 implements Runnable {
             consumer.close();
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Consumer " + id + "\n");
+        drugsCount.entrySet()
+                .forEach(e -> sb.append("Drug " + e.getKey() + " : " + e.getValue() + "$\n"));
+        return sb.toString();
+    }
+
     public void shutdown() {
+        System.out.println(this);
         consumer.wakeup();
     }
 
-    public static ConsumerG3 build(int id,
-                                   String groupId,
-                                   List<String> topics,
-                                   Path schemaPath) throws IOException {
+    public static AvroConsAnalyse build(int id,
+                                        Properties properties,
+                                        List<String> topics,
+                                        Path schemaPath) throws IOException {
         AvroSeDes<Prescription> serializer = AvroSeDes.build(schemaPath);
 
-        return new ConsumerG3(id, groupId, topics, serializer);
+        return new AvroConsAnalyse(id, properties, topics, serializer);
     }
 }
 

@@ -4,19 +4,25 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.uge.tp4.models.Prescription;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import java.time.Duration;
 import java.util.List;
-
-import static fr.uge.tp4.Utils.connectKafkaConsumer;
+import java.util.Objects;
+import java.util.Properties;
 
 public class JsonConsumer {
     private final ObjectMapper mapper = new ObjectMapper();
+    private final Properties properties;
 
     private KafkaConsumer<String, String> connectKafka(List<String> topics) {
-        return connectKafkaConsumer(topics);
+        var consumer = new KafkaConsumer<String,String>(properties);
+        consumer.subscribe(topics);
+        return consumer;
+    }
+
+    public JsonConsumer(Properties properties) {
+        Objects.requireNonNull(this.properties = properties);
     }
 
     public void read(List<String> topics) {
@@ -34,14 +40,12 @@ public class JsonConsumer {
                 return;
             }
 
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ZERO);
+            var records = consumer.poll(oneSecond);
             for (ConsumerRecord<String, String> record : records) {
-                System.out.println(record.value());
                 try {
                     var prescription = mapper.readValue(record.value(), Prescription.class);
                     System.out.println(prescription);
                 } catch (JsonProcessingException e) {
-                    System.out.println(e);
                     throw new RuntimeException(e);
                 }
             }

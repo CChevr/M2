@@ -14,17 +14,12 @@ public class JsonSender implements PrescriptionSender {
     private final ObjectMapper mapper = new ObjectMapper();
     private final KafkaProducer<String, String> kafkaProducer;
 
-    public JsonSender() {
-        kafkaProducer = connectKafkaProducer();
+    public JsonSender(Properties properties) {
+        Objects.requireNonNull(properties);
+        kafkaProducer = connectKafkaProducer(properties);
     }
 
-    private static KafkaProducer<String, String> connectKafkaProducer() {
-        Properties properties = new Properties();
-
-        properties.put("bootstrap.servers", "localhost:9092");
-        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-
+    private static KafkaProducer<String, String> connectKafkaProducer(Properties properties) {
         return new KafkaProducer<>(properties);
     }
 
@@ -75,17 +70,5 @@ public class JsonSender implements PrescriptionSender {
     @Override
     public void close() {
         kafkaProducer.close();
-    }
-
-    public static void main(String[] args) {
-        try (var sender = new JsonSender()) {
-            var topic = "tpdrugs";
-            var t = new Prescription("test", "test", 1, 10, 2);
-            sender.sendPrescription(t, topic);
-        }catch(Exception e) {
-            System.out.println(e);
-        }
-
-        //var test = new GenericData.Record("../resources/Prescription.avsc");
     }
 }

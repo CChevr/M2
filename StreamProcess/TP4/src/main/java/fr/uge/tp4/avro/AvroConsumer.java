@@ -15,21 +15,17 @@ import java.util.Properties;
 
 public class AvroConsumer {
     private final AvroSeDes<Prescription> deserializer;
+    private final Properties properties;
 
-    private AvroConsumer(AvroSeDes<Prescription> deserializer) {
+    private AvroConsumer(Properties properties, AvroSeDes<Prescription> deserializer) {
         Objects.requireNonNull(this.deserializer = deserializer);
+        Objects.requireNonNull(this.properties = properties);
     }
 
     private KafkaConsumer<String, byte[]> connectKafka(List<String> topics) {
-        Properties properties = new Properties();
-
-        properties.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
-        properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
-        properties.put("group.id", "group1");
-
         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(properties);
         consumer.subscribe(topics);
+
         return consumer;
     }
 
@@ -56,10 +52,11 @@ public class AvroConsumer {
         }
     }
 
-    public static AvroConsumer build(Path SchemaPath) throws IOException {
+    public static AvroConsumer build(Properties properties, Path SchemaPath) throws IOException {
         Objects.requireNonNull(SchemaPath);
+        Objects.requireNonNull(properties);
 
         AvroSeDes<Prescription> deserializer = AvroSeDes.build(SchemaPath);
-        return new AvroConsumer(deserializer);
+        return new AvroConsumer(properties, deserializer);
     }
 }
