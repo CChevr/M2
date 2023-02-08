@@ -1,3 +1,5 @@
 **JEE/training/**
 /Stream/*
 **/target/
+/IA/resources
+*.nt
