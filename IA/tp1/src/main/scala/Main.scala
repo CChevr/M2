@@ -1,8 +1,6 @@
 package fr.uge.ia
 
-<<<<<<< HEAD
 import org.apache.jena.rdf.model.{ModelFactory, SimpleSelector}
-
 import scala.io.Source
 
 object Main {
@@ -11,14 +9,6 @@ object Main {
     val propertyProperty = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
 
     def q2() {
-=======
-import org.apache.jena.rdf.model.ModelFactory
-
-object Main {
-    def main(args: Array[String]): Unit = {
-        val model = ModelFactory.createDefaultModel()
-
->>>>>>> bb5e59be93ee83ec2b7b9e0b0d99eae57856d141
         val subject = model.createResource("http://upem.fr/example/macarron")
         val prop = model.createProperty("http://upem.fr/example/love")
         val obj = model.createResource("http://upem.fr/example/cookies")
@@ -26,7 +16,6 @@ object Main {
 
         model.write(System.out)
     }
-<<<<<<< HEAD
 
     def addTriple(s: String, p: String, o: String): Unit = {
         val subject = model.createResource(s)
@@ -94,6 +83,4 @@ object Main {
         //q3_3()
         q3_4()
     }
-=======
->>>>>>> bb5e59be93ee83ec2b7b9e0b0d99eae57856d141
 }
