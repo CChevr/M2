@@ -17,6 +17,9 @@ You can the next section since the processing of the inference takes quite some 
 Read the page https://wiki.blazegraph.com/wiki/index.php/InferenceAndTruthMaintenance to under-
 stand how blazegraph works.
 
+> Modified: 766920
+Milliseconds: 507208
+
 ## 2 RDF4J programming over Blazegraph
 
 You will develop in Java some programs that will use a Blazegraph database. For this, you will use the RDF4J API (an API supporting different services in the context of semantic web application development) from URIs: http://docs.rdf4j.org/ and http://docs.rdf4j.org/javadoc/latest/ Create a java project with Maven and modify the pom.xml to get the following code (adapt the version of Blazegraph):
